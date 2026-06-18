@@ -1,0 +1,21 @@
+MRBS Modern Theme — Installation
+==================================
+
+Add this one line to your web/config.inc.php:
+
+    $theme = 'modern';
+
+That's it. MRBS will load:
+  Themes/modern/styling.inc  — color/font variables
+  Themes/modern/header.inc   — sidebar + topbar layout
+  Themes/modern/footer.inc   — closes layout wrappers + mobile JS
+  Themes/modern/theme.css    — CSS loaded after mrbs.css.php
+
+Requirements
+------------
+* Internet access for the Tabler icon font CDN (jsdelivr.net).
+  For offline installs, download the webfont from
+  https://github.com/tabler/tabler-icons/releases
+  and update the <link> URL in Themes/modern/header.inc → print_head().
+
+To revert to the default theme, remove (or comment out) the $theme line.

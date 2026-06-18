@@ -1,0 +1,934 @@
+/* ================================================================
+   MRBS Modern Theme — theme.css
+   Loaded after mrbs.css.php; overrides layout and adds new components.
+   ================================================================ */
+
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+  --modern-primary:       #4F46E5;
+  --modern-primary-light: #EEF2FF;
+  --modern-primary-dark:  #3730A3;
+  --modern-sidebar-bg:    #1E1B4B;
+  --modern-sidebar-text:  #A5B4FC;
+  --modern-sidebar-muted: #6366F1;
+  --modern-sidebar-w:     200px;
+  --modern-topbar-h:      56px;
+  --modern-radius:        8px;
+  --modern-radius-lg:     12px;
+  --modern-shadow:        0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+}
+
+/* ── Base resets ────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F8F9FC;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+               'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111827;
+}
+
+/* ── App shell ──────────────────────────────────────────────── */
+.mrbs-app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Simple mode (error / upgrade pages) — no sidebar */
+.mrbs-app--simple .mrbs-main {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────── */
+.mrbs-sidebar {
+  width: var(--modern-sidebar-w);
+  flex-shrink: 0;
+  background: var(--modern-sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 200;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99,102,241,.3) transparent;
+}
+
+.mrbs-sidebar::-webkit-scrollbar        { width: 4px; }
+.mrbs-sidebar::-webkit-scrollbar-track  { background: transparent; }
+.mrbs-sidebar::-webkit-scrollbar-thumb  { background: rgba(99,102,241,.4); border-radius: 2px; }
+
+/* Logo block */
+.mrbs-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 14px 12px;
+  text-decoration: none;
+}
+
+.mrbs-logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--modern-primary);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.mrbs-logo-mark .mrbs-logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.mrbs-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.mrbs-company-name,
+.mrbs-company-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+}
+
+.mrbs-app-label {
+  font-size: 10px;
+  color: #818CF8;
+  letter-spacing: .06em;
+}
+
+/* Nav sections */
+.mrbs-nav {
+  padding: 4px 8px 0;
+}
+
+.mrbs-nav-section-label {
+  font-size: 9px;
+  color: var(--modern-sidebar-muted);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 0 8px 6px;
+  margin: 0;
+}
+
+/* Nav items */
+.mrbs-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--modern-radius);
+  color: var(--modern-sidebar-text);
+  font-size: 13px;
+  text-decoration: none;
+  font-weight: normal;
+  margin-bottom: 2px;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mrbs-nav-item:link,
+.mrbs-nav-item:visited {
+  color: var(--modern-sidebar-text);
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.mrbs-nav-item:hover {
+  background: rgba(99,102,241,.2);
+  color: #C7D2FE;
+  text-decoration: none;
+}
+
+.mrbs-nav-item--active,
+.mrbs-nav-item--active:link,
+.mrbs-nav-item--active:visited {
+  background: var(--modern-primary);
+  color: #fff;
+  font-weight: 500;
+}
+
+.mrbs-nav-item .ti {
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.mrbs-sidebar-badge {
+  margin-left: auto;
+  background: #E11D48;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* Room tree */
+.mrbs-sidebar-rooms {
+  padding: 12px 8px 6px;
+  flex: 1;
+}
+
+.mrbs-area-group {
+  margin-bottom: 4px;
+}
+
+.mrbs-area-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  color: #818CF8;
+  font-size: 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  border-radius: 6px;
+}
+
+.mrbs-area-header:hover {
+  background: rgba(99,102,241,.1);
+}
+
+.mrbs-area-header .ti {
+  font-size: 13px;
+  transition: transform .2s;
+}
+
+.mrbs-area-header[aria-expanded="false"] .ti {
+  transform: rotate(-90deg);
+}
+
+.mrbs-area-rooms {
+  padding-left: 4px;
+}
+
+.mrbs-room-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px 5px 20px;
+  border-radius: 6px;
+  color: var(--modern-sidebar-text);
+  font-size: 12px;
+  text-decoration: none;
+  margin-bottom: 1px;
+  transition: background .12s;
+}
+
+.mrbs-room-item:link,
+.mrbs-room-item:visited {
+  color: var(--modern-sidebar-text);
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.mrbs-room-item:hover {
+  background: rgba(99,102,241,.15);
+  color: #C7D2FE;
+  text-decoration: none;
+}
+
+.mrbs-room-item--active,
+.mrbs-room-item--active:link,
+.mrbs-room-item--active:visited {
+  color: #fff;
+  font-weight: 500;
+}
+
+.mrbs-room-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Sidebar footer (user chip + logoff) */
+.mrbs-sidebar-footer {
+  padding: 10px 12px;
+  border-top: 1px solid rgba(99,102,241,.2);
+  margin-top: auto;
+}
+
+.mrbs-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: var(--modern-radius);
+  margin-bottom: 6px;
+  cursor: default;
+}
+
+.mrbs-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--modern-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.mrbs-user-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Override generic input[type=submit] for the user name button */
+.mrbs-user-form {
+  display: inline;
+}
+
+.mrbs-user-name-btn {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  font-weight: 500;
+  color: #C7D2FE !important;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+  display: block;
+}
+
+.mrbs-user-name-btn:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+.mrbs-user-role {
+  font-size: 10px;
+  color: #818CF8;
+}
+
+.mrbs-sidebar-logoff,
+.mrbs-sidebar-logon {
+  display: flex;
+}
+
+.mrbs-auth-form {
+  display: block;
+  width: 100%;
+}
+
+.mrbs-auth-btn {
+  width: 100%;
+  padding: 6px 10px !important;
+  font-size: 11px !important;
+  background: rgba(99,102,241,.2) !important;
+  border: 1px solid rgba(99,102,241,.3) !important;
+  border-radius: 6px !important;
+  color: #C7D2FE !important;
+  cursor: pointer;
+  text-align: center;
+}
+
+.mrbs-auth-btn:hover {
+  background: rgba(99,102,241,.35) !important;
+  color: #fff !important;
+}
+
+/* ── Main content area ──────────────────────────────────────── */
+.mrbs-main {
+  flex: 1;
+  margin-left: var(--modern-sidebar-w);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+/* ── Topbar (was .banner) ───────────────────────────────────── */
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #E5E7EB;
+  box-shadow: var(--modern-shadow);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px !important;
+  height: var(--modern-topbar-h);
+  /* Override mrbs.css.php float/width */
+  float: none !important;
+  width: auto !important;
+  box-sizing: border-box;
+}
+
+.banner.simple {
+  gap: 0;
+  padding: 0 20px !important;
+}
+
+.banner.simple .mrbs-logo {
+  padding: 0;
+}
+
+.banner.simple .mrbs-logo-mark {
+  background: var(--modern-primary);
+}
+
+.banner.simple .mrbs-company-name {
+  color: #111827;
+}
+
+.banner.simple .mrbs-app-label {
+  color: #6B7280;
+}
+
+/* Topbar sections */
+.mrbs-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mrbs-topbar-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.mrbs-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Mobile hamburger */
+.mrbs-sidebar-toggle {
+  display: none;
+  background: none;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #6B7280;
+  font-size: 18px;
+  padding: 0;
+}
+
+/* Date prev/today/next */
+.mrbs-date-nav {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.mrbs-date-prev,
+.mrbs-date-next {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6B7280 !important;
+  text-decoration: none !important;
+  font-size: 15px;
+  font-weight: normal !important;
+  transition: background .12s, border-color .12s;
+}
+
+.mrbs-date-prev:hover,
+.mrbs-date-next:hover {
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+  text-decoration: none !important;
+}
+
+.mrbs-today-btn {
+  padding: 4px 10px;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #374151 !important;
+  background: #fff;
+  text-decoration: none !important;
+  font-weight: normal !important;
+  white-space: nowrap;
+  transition: background .12s;
+}
+
+.mrbs-today-btn:hover {
+  background: #F3F4F6;
+  text-decoration: none !important;
+}
+
+/* Period label (filled by JS) */
+.mrbs-topbar-period {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap;
+}
+
+/* View switcher */
+.mrbs-view-switcher {
+  display: flex;
+  border: 1px solid #E5E7EB;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.mrbs-view-btn {
+  padding: 5px 11px;
+  font-size: 12px;
+  color: #6B7280 !important;
+  background: #fff;
+  text-decoration: none !important;
+  font-weight: normal !important;
+  border-right: 1px solid #E5E7EB;
+  transition: background .1s;
+}
+
+.mrbs-view-btn:last-child {
+  border-right: none;
+}
+
+.mrbs-view-btn:hover {
+  background: #F3F4F6;
+  text-decoration: none !important;
+}
+
+.mrbs-view-btn--active,
+.mrbs-view-btn--active:link,
+.mrbs-view-btn--active:visited {
+  background: var(--modern-primary);
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+
+/* Goto date form (JS shows this) */
+.mrbs-goto-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Search */
+.mrbs-topbar-search {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.mrbs-topbar-search input[type="search"] {
+  padding: 6px 10px 6px 32px !important;
+  border: 1px solid #E5E7EB;
+  border-radius: 7px;
+  font-size: 12px;
+  width: 180px;
+  background: #F9FAFB url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center;
+  transition: border-color .15s, width .2s;
+}
+
+.mrbs-topbar-search input[type="search"]:focus {
+  border-color: var(--modern-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+  width: 220px;
+}
+
+/* Outstanding (notification bell) */
+.mrbs-outstanding {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #E5E7EB;
+  border-radius: 7px;
+  color: #6B7280 !important;
+  text-decoration: none !important;
+  font-size: 18px;
+  font-weight: normal !important;
+  transition: background .12s;
+}
+
+.mrbs-outstanding:hover {
+  background: #F3F4F6;
+  text-decoration: none !important;
+}
+
+.mrbs-outstanding--attention {
+  color: #D97706 !important;
+  border-color: #FDE68A;
+  background: #FFFBEB;
+}
+
+.mrbs-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #E11D48;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 600;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #fff;
+}
+
+/* New booking button */
+.mrbs-new-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--modern-primary);
+  color: #fff !important;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: background .12s;
+}
+
+.mrbs-new-btn:hover {
+  background: var(--modern-primary-dark);
+  text-decoration: none !important;
+  color: #fff !important;
+}
+
+.mrbs-new-btn .ti {
+  font-size: 15px;
+}
+
+/* ── Contents area ──────────────────────────────────────────── */
+.contents {
+  float: none !important;
+  width: auto !important;
+  flex: 1;
+  padding: 1.5rem !important;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ── Calendar grid improvements ─────────────────────────────── */
+
+/* Day / week header labels */
+.dwm_main th {
+  background: #F9FAFB;
+  font-weight: 500;
+  font-size: 12px;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 8px 6px;
+  border-bottom: 2px solid #E5E7EB !important;
+}
+
+/* Today column highlight in header */
+.dwm_main th.today {
+  color: var(--modern-primary);
+}
+
+/* Time labels column */
+.dwm_main td.time {
+  font-size: 11px;
+  color: #9CA3AF;
+  padding-right: 8px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Booking cells — round corners, left-border accent */
+.dwm_main td.new a,
+.dwm_main td.writable a {
+  border-radius: 6px !important;
+  padding: 2px 6px;
+  transition: opacity .1s;
+  display: block;
+}
+
+.dwm_main td.new a:hover,
+.dwm_main td.writable a:hover {
+  opacity: .82;
+  text-decoration: none;
+}
+
+/* Booking type left-border accents */
+.dwm_main td.booking_type_A a { border-left: 3px solid #4F46E5 !important; color: #3730A3 !important; }
+.dwm_main td.booking_type_B a { border-left: 3px solid #0D9488 !important; color: #0F766E !important; }
+.dwm_main td.booking_type_C a { border-left: 3px solid #D97706 !important; color: #B45309 !important; }
+.dwm_main td.booking_type_D a { border-left: 3px solid #E11D48 !important; color: #BE123C !important; }
+.dwm_main td.booking_type_E a { border-left: 3px solid #9333EA !important; color: #7E22CE !important; }
+.dwm_main td.booking_type_F a { border-left: 3px solid #16A34A !important; color: #15803D !important; }
+.dwm_main td.booking_type_G a { border-left: 3px solid #DC2626 !important; color: #B91C1C !important; }
+.dwm_main td.booking_type_H a { border-left: 3px solid #2563EB !important; color: #1D4ED8 !important; }
+.dwm_main td.booking_type_I a { border-left: 3px solid #C026D3 !important; color: #A21CAF !important; }
+.dwm_main td.booking_type_J a { border-left: 3px solid #059669 !important; color: #047857 !important; }
+
+/* Month view cells */
+.month_main td {
+  border-radius: 6px;
+  vertical-align: top;
+  padding: 4px 5px;
+  transition: background .12s;
+}
+
+.month_main td:hover {
+  background: #EEF2FF !important;
+}
+
+.month_main td.today {
+  box-shadow: inset 0 0 0 2px var(--modern-primary);
+}
+
+/* All-rooms day strips */
+.all_rooms td a div {
+  border-radius: 0 4px 4px 0;
+  font-size: 11px;
+}
+
+/* ── Timeline indicator ─────────────────────────────────────── */
+.timeline {
+  background: var(--modern-primary) !important;
+  height: 2px !important;
+}
+
+/* ── Admin tables ────────────────────────────────────────────── */
+table.admin_table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+table.admin_table th {
+  background: var(--modern-primary);
+  color: #fff;
+  font-weight: 500;
+  padding: 10px 12px;
+  font-size: 12px;
+  text-align: left;
+  border-right: 1px solid #4338CA;
+}
+
+table.admin_table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #F3F4F6;
+  vertical-align: middle;
+}
+
+table.admin_table tr:nth-child(odd)  td { background: #fff; }
+table.admin_table tr:nth-child(even) td { background: #F5F3FF; }
+table.admin_table tr:hover           td { background: var(--modern-primary-light); }
+
+/* ── Forms ───────────────────────────────────────────────────── */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+  border: 1px solid #D1D5DB;
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #111827;
+  background: #fff;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--modern-primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.12);
+}
+
+input[type="submit"],
+button[type="submit"],
+.submit {
+  background: var(--modern-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+input[type="submit"]:hover,
+button[type="submit"]:hover {
+  background: var(--modern-primary-dark);
+}
+
+/* ── Headings ────────────────────────────────────────────────── */
+h1 { font-size: 20px; font-weight: 600; color: #111827; margin: 0 0 1rem; }
+h2 { font-size: 16px; font-weight: 600; color: #111827; }
+h3 { font-size: 14px; font-weight: 600; color: #374151; }
+
+/* ── Messages / notifications ───────────────────────────────── */
+.error,
+p.error {
+  background: #FFF1F2;
+  border: 1px solid #FCA5A5;
+  border-left: 4px solid #E11D48;
+  border-radius: 8px;
+  color: #BE123C;
+  padding: 10px 14px;
+  margin: 8px 0;
+}
+
+.warning {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-left: 4px solid #D97706;
+  border-radius: 8px;
+  color: #B45309;
+  padding: 10px 14px;
+  margin: 8px 0;
+}
+
+.note {
+  font-style: italic;
+  color: #6B7280;
+}
+
+/* ── Color key ───────────────────────────────────────────────── */
+.color_key table {
+  border-collapse: separate;
+  border-spacing: 4px;
+}
+
+.color_key td {
+  border-radius: 6px !important;
+  padding: 4px 10px !important;
+  font-size: 12px;
+}
+
+/* ── Kiosk QR code ───────────────────────────────────────────── */
+.mrbs-kiosk-qr {
+  padding: 12px;
+  background: #fff;
+  border-radius: 8px;
+  margin: 8px 12px;
+}
+
+.mrbs-kiosk-qr svg {
+  width: 100%;
+  height: auto;
+}
+
+/* ── Print overrides ─────────────────────────────────────────── */
+@media print {
+  .mrbs-sidebar { display: none !important; }
+  .mrbs-main    { margin-left: 0 !important; }
+  .banner       { position: static !important; box-shadow: none !important; }
+}
+
+/* ── Mobile / responsive ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .mrbs-sidebar {
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+  }
+
+  .mrbs-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mrbs-main {
+    margin-left: 0;
+  }
+
+  .mrbs-sidebar-toggle {
+    display: flex;
+  }
+
+  .mrbs-topbar-center {
+    display: none;
+  }
+
+  .mrbs-topbar-search input[type="search"] {
+    width: 130px;
+  }
+
+  .mrbs-new-btn span {
+    display: none;
+  }
+
+  .mrbs-new-btn {
+    padding: 6px 8px;
+  }
+
+  /* Sidebar overlay */
+  .mrbs-sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    z-index: 199;
+  }
+
+  .mrbs-sidebar-overlay.open {
+    display: block;
+  }
+}
+
+/* ── Sidebar toggle JS helper ────────────────────────────────── */
+/* Inline script added at end of page by theme — wires up hamburger */

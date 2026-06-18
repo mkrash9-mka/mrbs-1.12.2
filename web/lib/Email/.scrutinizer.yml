@@ -1,0 +1,14 @@
+# .scrutinizer.yml
+
+checks:
+    php:
+        code_rating: true
+        duplication: true
+build:
+    tests:
+        override:
+            -
+                command: 'bin/phpunit --coverage-clover=.coverage'
+                coverage:
+                    file: '.coverage'
+                    format: 'clover'
