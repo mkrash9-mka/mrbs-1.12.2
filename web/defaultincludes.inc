@@ -32,4 +32,6 @@ require_once 'dbsys.inc';
 require_once 'mrbs_auth.inc';
 require_once 'init.inc';
 require_once 'upgrade.inc';
+require_once 'site_settings.inc';
+apply_site_settings();
 require 'standard_vars.inc.php';

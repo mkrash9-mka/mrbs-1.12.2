@@ -817,6 +817,70 @@ button[type="submit"]:hover {
   background: var(--modern-primary-dark);
 }
 
+/* ── Flatpickr calendar popups (date pickers, index.php minicalendars) ──
+   Flatpickr's month header contains its own <input type="number"> (the
+   year) and <select> (the month dropdown). The generic input/select rule
+   above is meant for real MRBS form fields, but it also matches these
+   internal controls — adding a border, padding and background that breaks
+   Flatpickr's tight inline header layout, making the month name and year
+   wrap onto separate, overlapping lines. Strip that styling back off here
+   so Flatpickr's own compact layout applies. */
+.flatpickr-calendar input,
+.flatpickr-calendar select {
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0;
+  font-size: inherit !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.flatpickr-calendar input:focus,
+.flatpickr-calendar select:focus {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* Selected day: bold, high-contrast text on the indigo highlight circle */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+  font-weight: 700 !important;
+  color: #fff !important;
+}
+
+/* Today (when not also selected) and ordinary days: clearer weight/contrast */
+.flatpickr-day.today {
+  font-weight: 600;
+  border-color: var(--modern-primary);
+}
+
+.flatpickr-day {
+  font-weight: 500;
+  color: #1F2937;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+  font-weight: 400;
+  color: #9CA3AF;
+}
+
+.flatpickr-day:hover {
+  background: var(--modern-primary-light);
+  border-color: var(--modern-primary-light);
+}
+
 /* ── Headings ────────────────────────────────────────────────── */
 h1 { font-size: 20px; font-weight: 600; color: #111827; margin: 0 0 1rem; }
 h2 { font-size: 16px; font-weight: 600; color: #111827; }
@@ -927,6 +991,457 @@ p.error {
 
   .mrbs-sidebar-overlay.open {
     display: block;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Modern booking form — web/edit_entry.php (form id="main")
+   Desktop-only redesign (no mobile breakpoint needed here).
+
+   Base mrbs.css.php lays this form out as a CSS table:
+     fieldset      -> display: table;      float: left; width: auto;
+     fieldset > div -> display: table-row;
+     > * (cells)   -> display: table-cell; (label right-aligned)
+     > div > *     -> float: left;          (eg start/end children)
+   Browsers auto-generate anonymous table-cell boxes around any
+   non-table-cell child of a table-row, so every level of that chain
+   has to be reset together — overriding just the label silently gets
+   re-wrapped in an anonymous cell and the override is lost. Hence the
+   !important on the structural (display/float) resets below; cosmetic
+   rules (color, spacing, width) are left normal-weight so they stay
+   easy to tweak later.
+   ════════════════════════════════════════════════════════════════ */
+
+#main.standard {
+  display: block !important;
+  float: none !important;
+  max-width: 880px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* :not(.js_none) matters here too — the repeat-detail fieldsets (rep_weekly,
+   rep_monthly, etc.) rely on .js_none to stay hidden until JS shows the one
+   matching the selected repeat type; forcing display would show them all. */
+#main.standard fieldset:not(.js_none) {
+  display: block !important;
+  float: none !important;
+  clear: none !important;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--modern-radius-lg);
+  box-shadow: var(--modern-shadow);
+  padding: 28px 32px;
+  margin: 0 0 20px 0;
+}
+
+#main.standard fieldset legend {
+  display: block;
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--modern-primary);
+  padding: 0 0 14px 0;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #F3F4F6;
+  width: 100%;
+}
+
+/* Each field was a table-row; make it a plain block stack instead.
+   :not(.none) is essential here — div_areas carries class="none" and
+   stays JS-hidden until there's more than one area; forcing display
+   on it unconditionally would make it pop up on every page load. */
+#main.standard fieldset > div:not(.none) {
+  display: block !important;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+#main.standard fieldset > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Reset every direct child (label + control) off table-cell. */
+#main.standard fieldset > div > *:not(.none) {
+  display: block !important;
+  float: none !important;
+  vertical-align: initial !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#main.standard fieldset > div > label {
+  font-weight: 600;
+  font-size: .8rem;
+  color: #374151;
+  text-align: left !important;
+  padding: 0 !important;
+  margin: 0 0 8px 0;
+}
+
+/* The control wrapper <div> (FieldDiv): was text-align:left + float
+   children — turn it into a proper flex row for date/time/checkbox
+   groups, room lists, etc. */
+#main.standard fieldset > div > div {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+#main.standard fieldset > div > div > * {
+  float: none !important;
+  margin: 0 !important;
+}
+
+#main.standard input[type="text"],
+#main.standard input[type="date"],
+#main.standard input[type="number"],
+#main.standard input[type="email"],
+#main.standard input[type="url"],
+#main.standard select,
+#main.standard textarea {
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--modern-radius);
+  padding: 10px 12px;
+  font-size: .9rem;
+  color: #111827;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+#main.standard input:focus,
+#main.standard select:focus,
+#main.standard textarea:focus {
+  outline: none;
+  border-color: var(--modern-primary);
+  box-shadow: 0 0 0 3px var(--modern-primary-light);
+}
+
+#main.standard textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Start / end rows: date input + time-slot select + all-day checkbox
+   sitting on a single line, sized to content rather than stretched. */
+#main.standard .start_end input[type="date"] {
+  width: auto;
+  flex: 0 0 170px;
+}
+
+#main.standard .start_end select {
+  width: auto;
+  flex: 1 1 180px;
+  max-width: 260px;
+}
+
+#main.standard .start_end > div > div {
+  /* the all-day checkbox's own wrapper <div>, shrink to its content */
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+/* Inline checkbox/radio labels (all-day, month_absolute/relative) */
+#main.standard label.no_suffix {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  width: auto !important;
+  font-weight: 500;
+  font-size: .85rem;
+  color: #374151;
+  white-space: nowrap;
+  margin: 0 !important;
+}
+
+/* Room / area multi-select — give it real height and a modern look */
+#main.standard .multiline select[multiple] {
+  min-height: 160px;
+}
+
+#main.standard select[multiple] option {
+  padding: 7px 10px;
+  border-radius: 4px;
+}
+
+#main.standard select[multiple] option:checked {
+  background: linear-gradient(0deg, var(--modern-primary-light) 0%, var(--modern-primary-light) 100%);
+  color: var(--modern-primary-dark);
+}
+
+/* Radio-button groups (confirmation/privacy status, repeat type) as
+   pill buttons instead of the base inline-block/float layout. */
+#main.standard .group {
+  display: flex !important;
+  flex-wrap: wrap;
+  float: none !important;
+  gap: 8px;
+  width: auto !important;
+}
+
+#main.standard .group label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  width: auto !important;
+  border: 1px solid #D1D5DB;
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: .85rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  margin: 0 !important;
+  transition: border-color .15s, background .15s, color .15s;
+}
+
+#main.standard .group label:has(input:checked) {
+  border-color: var(--modern-primary);
+  background: var(--modern-primary-light);
+  color: var(--modern-primary-dark);
+}
+
+/* Nested repeat-detail fieldsets: lighter, inset look */
+#main.standard fieldset fieldset {
+  background: #F9FAFB;
+  border: 1px dashed #D1D5DB;
+  box-shadow: none;
+  padding: 18px 20px;
+  margin: 12px 0 0 0;
+}
+
+#main.standard fieldset fieldset legend {
+  border-bottom: none;
+  padding-bottom: 4px;
+}
+
+#main.standard input[type="checkbox"],
+#main.standard input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  accent-color: var(--modern-primary);
+}
+
+/* The JS-populated validation message — invisible until it has text. */
+#main.standard .error:empty {
+  display: none !important;
+}
+
+#main.standard .error {
+  display: block;
+  width: 100%;
+  font-size: .8rem;
+  font-weight: 500;
+  color: #DC2626;
+}
+
+/* Submit row — last fieldset holds the .submit_buttons field, whose
+   "label" slot is actually repurposed by edit_entry.php to hold the
+   Back button (addLabelElement($back)), with Save + conflict/policy
+   check spans in the control div. display must be !important here too,
+   since it has to win over the earlier fieldset:not(.js_none) block rule
+   at equal specificity. */
+#main.standard fieldset:last-of-type {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 8px 0 0;
+  display: flex !important;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Selectors below use fieldset > div.submit_buttons (not just .submit_buttons)
+   so their specificity matches or exceeds the generic depth-1/depth-2 resets
+   above, guaranteeing they win regardless of source order. */
+#main.standard fieldset > div.submit_buttons {
+  display: flex !important;
+  width: auto !important;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0 !important;
+}
+
+#main.standard fieldset > div.submit_buttons > label.no_suffix,
+#main.standard fieldset > div.submit_buttons > div {
+  display: flex !important;
+  width: auto !important;
+  align-items: center;
+  gap: 12px;
+}
+
+#main.standard .submit_buttons #conflict_check:empty,
+#main.standard .submit_buttons #policy_check:empty {
+  display: none !important;
+}
+
+#main.standard input[type="submit"],
+#main.standard button[type="submit"] {
+  width: auto !important;
+  background: var(--modern-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--modern-radius);
+  padding: 11px 26px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+#main.standard input[name="back_button"] {
+  background: #fff;
+  color: #374151;
+  border: 1px solid #D1D5DB;
+}
+
+#main.standard input[type="submit"]:hover,
+#main.standard button[type="submit"]:hover {
+  background: var(--modern-primary-dark);
+}
+
+#main.standard input[name="back_button"]:hover {
+  background: #F9FAFB;
+  border-color: #9CA3AF;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   Site settings page — web/edit_site_settings.php
+   ════════════════════════════════════════════════════════════════ */
+
+.mrbs-settings-page {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.mrbs-settings-page h1 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.mrbs-settings-flash {
+  padding: 12px 16px;
+  border-radius: var(--modern-radius);
+  margin-bottom: 16px;
+  font-size: .9rem;
+}
+
+.mrbs-settings-flash--success {
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+}
+
+#form_site_settings fieldset {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--modern-radius-lg);
+  box-shadow: var(--modern-shadow);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+#form_site_settings fieldset legend {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--modern-primary);
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+
+#form_site_settings fieldset > div {
+  margin-bottom: 18px;
+}
+
+#form_site_settings fieldset > div:last-child {
+  margin-bottom: 0;
+}
+
+#form_site_settings fieldset > div > label {
+  display: block;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+#form_site_settings input[type="text"],
+#form_site_settings input[type="email"],
+#form_site_settings input[type="url"],
+#form_site_settings input[type="number"],
+#form_site_settings input[type="password"],
+#form_site_settings select {
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--modern-radius);
+  padding: 10px 12px;
+  font-size: .9rem;
+  box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+#form_site_settings input:focus,
+#form_site_settings select:focus {
+  outline: none;
+  border-color: var(--modern-primary);
+  box-shadow: 0 0 0 3px var(--modern-primary-light);
+}
+
+#form_site_settings input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--modern-primary);
+  margin-right: 6px;
+}
+
+#form_site_settings input[type="file"] {
+  font-size: .85rem;
+}
+
+.mrbs-logo-preview {
+  margin-bottom: 14px;
+}
+
+.mrbs-logo-preview img {
+  max-height: 64px;
+  max-width: 220px;
+  border-radius: var(--modern-radius);
+  border: 1px solid #E5E7EB;
+  padding: 6px;
+  background: #fff;
+}
+
+#form_site_settings input[type="submit"] {
+  background: var(--modern-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--modern-radius);
+  padding: 10px 22px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+#form_site_settings input[type="submit"]:hover {
+  background: var(--modern-primary-dark);
+}
+
+@media (max-width: 600px) {
+  #form_site_settings fieldset {
+    padding: 18px 16px;
   }
 }
 

@@ -18,8 +18,8 @@ The installer will prompt for passwords and configuration interactively.
 | Step | Action |
 |------|--------|
 | 1 | `apt-get update` |
-| 2 | Add `ppa:ondrej/php` on Ubuntu 20.04/22.04 for PHP 8.2 |
-| 3 | Install Apache2, MariaDB, PHP 8.x + extensions |
+| 2 | Ensure PHP 8.4+ is available, adding `ppa:ondrej/php` if the distro repos don't have it (required — MRBS uses the `Pdo\Mysql` class introduced in PHP 8.4) |
+| 3 | Install Apache2, MariaDB, PHP 8.4 + extensions |
 | 4 | Secure MariaDB, create DB + user, import `tables.my.sql` |
 | 5 | Deploy `web/` → web root (default `/var/www/html/mrbs`) |
 | 6 | Generate `config.inc.php` with DB credentials & timezone |
@@ -92,8 +92,31 @@ sudo certbot --apache -d yourdomain.com --email admin@yourdomain.com
 
 ---
 
-## Upgrade from a previous MRBS installation
+## Updating an existing installation
 
-1. Back up `config.inc.php` and the database.
-2. Run `install.sh` — it skips overwriting an existing `config.inc.php`.
-3. MRBS will automatically run any DB schema upgrades on first page load.
+Use `update.sh` instead of re-running `install.sh`. Copy the new MRBS package
+(with the updated `web/` directory) onto the server next to `update.sh`, then:
+
+```bash
+sudo bash update.sh
+```
+
+What it does:
+
+| Step | Action |
+|------|--------|
+| 1 | Back up `config.inc.php`, `web/uploaded/`, and dump the database (optionally tar the full web root too) |
+| 2 | Deploy the new `web/` files with `rsync`, preserving `config.inc.php` and `uploaded/` |
+| 3 | Attempt the MRBS database schema upgrade automatically (or print manual instructions) |
+| 4 | Restart Apache |
+
+Environment variable overrides (same idea as `install.sh`):
+
+```bash
+export MRBS_WEBROOT="/var/www/html/mrbs"   # path to the existing install
+export BACKUP_ROOT="/var/backups/mrbs"     # where backups are written
+sudo bash update.sh
+```
+
+Rollback commands are printed at the end of the run, using the timestamped
+backup directory created in step 1.

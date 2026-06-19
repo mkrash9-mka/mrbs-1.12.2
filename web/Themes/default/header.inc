@@ -232,6 +232,10 @@ function print_menu_items(string $query) : void
     $menu_items['user_list'] = 'edit_users.php';
   }
 
+  // edit_site_settings.php has no special case in get_page_level(), so it defaults
+  // to $max_level (admin only) and will be filtered out below for non-admins.
+  $menu_items['site_settings'] = 'edit_site_settings.php';
+
   foreach ($menu_items as $token => $page)
   {
     // Only print menu items for which the user is allowed to access the page
