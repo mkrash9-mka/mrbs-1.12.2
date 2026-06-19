@@ -817,6 +817,70 @@ button[type="submit"]:hover {
   background: var(--modern-primary-dark);
 }
 
+/* ── Flatpickr calendar popups (date pickers, index.php minicalendars) ──
+   Flatpickr's month header contains its own <input type="number"> (the
+   year) and <select> (the month dropdown). The generic input/select rule
+   above is meant for real MRBS form fields, but it also matches these
+   internal controls — adding a border, padding and background that breaks
+   Flatpickr's tight inline header layout, making the month name and year
+   wrap onto separate, overlapping lines. Strip that styling back off here
+   so Flatpickr's own compact layout applies. */
+.flatpickr-calendar input,
+.flatpickr-calendar select {
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0;
+  font-size: inherit !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.flatpickr-calendar input:focus,
+.flatpickr-calendar select:focus {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* Selected day: bold, high-contrast text on the indigo highlight circle */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+  font-weight: 700 !important;
+  color: #fff !important;
+}
+
+/* Today (when not also selected) and ordinary days: clearer weight/contrast */
+.flatpickr-day.today {
+  font-weight: 600;
+  border-color: var(--modern-primary);
+}
+
+.flatpickr-day {
+  font-weight: 500;
+  color: #1F2937;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+  font-weight: 400;
+  color: #9CA3AF;
+}
+
+.flatpickr-day:hover {
+  background: var(--modern-primary-light);
+  border-color: var(--modern-primary-light);
+}
+
 /* ── Headings ────────────────────────────────────────────────── */
 h1 { font-size: 20px; font-weight: 600; color: #111827; margin: 0 0 1rem; }
 h2 { font-size: 16px; font-weight: 600; color: #111827; }
