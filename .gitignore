@@ -12,3 +12,6 @@ web/config.inc.php
 /nbproject
 /.vs
 /.claude
+web/uploaded/*
+!web/uploaded/.gitkeep
+!web/uploaded/.htaccess

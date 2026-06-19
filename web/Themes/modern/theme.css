@@ -930,5 +930,324 @@ p.error {
   }
 }
 
+/* ════════════════════════════════════════════════════════════════
+   Modern booking form — web/edit_entry.php (form id="main")
+   ════════════════════════════════════════════════════════════════ */
+
+#main.standard {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+#main.standard fieldset {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--modern-radius-lg);
+  box-shadow: var(--modern-shadow);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+#main.standard fieldset legend {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--modern-primary);
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+
+#main.standard fieldset > div {
+  margin-bottom: 18px;
+}
+
+#main.standard fieldset > div:last-child {
+  margin-bottom: 0;
+}
+
+#main.standard fieldset > div > label {
+  display: block;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+#main.standard input[type="text"],
+#main.standard input[type="date"],
+#main.standard input[type="number"],
+#main.standard input[type="email"],
+#main.standard input[type="url"],
+#main.standard select,
+#main.standard textarea {
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--modern-radius);
+  padding: 10px 12px;
+  font-size: .9rem;
+  color: #111827;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+#main.standard input:focus,
+#main.standard select:focus,
+#main.standard textarea:focus {
+  outline: none;
+  border-color: var(--modern-primary);
+  box-shadow: 0 0 0 3px var(--modern-primary-light);
+}
+
+#main.standard textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Start / end rows: date + slot select + all-day checkbox, laid out inline */
+#main.standard .start_end > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+#main.standard .start_end input[type="date"] {
+  width: auto;
+  min-width: 150px;
+  flex: 1 1 150px;
+}
+
+#main.standard .start_end select {
+  width: auto;
+  flex: 1 1 130px;
+}
+
+#main.standard .start_end label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: .85rem;
+  color: #374151;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* Room / area multi-select */
+#main.standard .multiline select[multiple] {
+  min-height: 120px;
+}
+
+/* Repeat-type radio group as pill buttons */
+#main.standard #rep_type > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#main.standard #rep_type label {
+  border: 1px solid #D1D5DB;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: .85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  margin: 0;
+}
+
+#main.standard #rep_type input[type="radio"] {
+  margin-right: 6px;
+}
+
+/* Nested repeat-detail fieldsets: lighter, inset look */
+#main.standard fieldset fieldset {
+  background: #F9FAFB;
+  border: 1px dashed #D1D5DB;
+  box-shadow: none;
+  padding: 16px 18px;
+  margin-top: 12px;
+}
+
+#main.standard input[type="checkbox"],
+#main.standard input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--modern-primary);
+}
+
+/* Submit row — last fieldset holds just the submit button */
+#main.standard fieldset:last-of-type {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 8px 0 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#main.standard input[type="submit"],
+#main.standard button[type="submit"] {
+  background: var(--modern-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--modern-radius);
+  padding: 10px 22px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+#main.standard input[type="submit"]:hover,
+#main.standard button[type="submit"]:hover {
+  background: var(--modern-primary-dark);
+}
+
+@media (max-width: 600px) {
+  #main.standard fieldset {
+    padding: 18px 16px;
+  }
+
+  #main.standard .start_end > div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   Site settings page — web/edit_site_settings.php
+   ════════════════════════════════════════════════════════════════ */
+
+.mrbs-settings-page {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.mrbs-settings-page h1 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.mrbs-settings-flash {
+  padding: 12px 16px;
+  border-radius: var(--modern-radius);
+  margin-bottom: 16px;
+  font-size: .9rem;
+}
+
+.mrbs-settings-flash--success {
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+}
+
+#form_site_settings fieldset {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--modern-radius-lg);
+  box-shadow: var(--modern-shadow);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+#form_site_settings fieldset legend {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--modern-primary);
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+
+#form_site_settings fieldset > div {
+  margin-bottom: 18px;
+}
+
+#form_site_settings fieldset > div:last-child {
+  margin-bottom: 0;
+}
+
+#form_site_settings fieldset > div > label {
+  display: block;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+#form_site_settings input[type="text"],
+#form_site_settings input[type="email"],
+#form_site_settings input[type="url"],
+#form_site_settings input[type="number"],
+#form_site_settings input[type="password"],
+#form_site_settings select {
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--modern-radius);
+  padding: 10px 12px;
+  font-size: .9rem;
+  box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+#form_site_settings input:focus,
+#form_site_settings select:focus {
+  outline: none;
+  border-color: var(--modern-primary);
+  box-shadow: 0 0 0 3px var(--modern-primary-light);
+}
+
+#form_site_settings input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--modern-primary);
+  margin-right: 6px;
+}
+
+#form_site_settings input[type="file"] {
+  font-size: .85rem;
+}
+
+.mrbs-logo-preview {
+  margin-bottom: 14px;
+}
+
+.mrbs-logo-preview img {
+  max-height: 64px;
+  max-width: 220px;
+  border-radius: var(--modern-radius);
+  border: 1px solid #E5E7EB;
+  padding: 6px;
+  background: #fff;
+}
+
+#form_site_settings input[type="submit"] {
+  background: var(--modern-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--modern-radius);
+  padding: 10px 22px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+#form_site_settings input[type="submit"]:hover {
+  background: var(--modern-primary-dark);
+}
+
+@media (max-width: 600px) {
+  #form_site_settings fieldset {
+    padding: 18px 16px;
+  }
+}
+
 /* ── Sidebar toggle JS helper ────────────────────────────────── */
 /* Inline script added at end of page by theme — wires up hamburger */

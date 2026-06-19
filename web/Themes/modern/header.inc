@@ -213,6 +213,10 @@ function print_menu_items(string $query) : void
     $items['user_list'] = array('page' => 'edit_users.php', 'icon' => 'ti-users');
   }
 
+  // edit_site_settings.php has no special case in get_page_level(), so it defaults
+  // to $max_level (admin only) and will be filtered out below for non-admins.
+  $items['site_settings'] = array('page' => 'edit_site_settings.php', 'icon' => 'ti-settings');
+
   foreach ($items as $token => $item)
   {
     if (!checkAuthorised($item['page'], true))
