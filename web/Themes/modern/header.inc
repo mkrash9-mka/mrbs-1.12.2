@@ -407,7 +407,7 @@ function print_sidebar_rooms(int $current_area, int $current_room) : void
   try
   {
     $sql_areas = "SELECT id, area_name FROM " . _tbl('area')
-               . " WHERE disabled = 0 ORDER BY area_name";
+               . " WHERE disabled = 0 ORDER BY sort_key";
     $areas = db()->query($sql_areas);
   }
   catch (\Exception $e)
@@ -431,7 +431,7 @@ function print_sidebar_rooms(int $current_area, int $current_room) : void
     try
     {
       $sql_rooms = "SELECT id, room_name FROM " . _tbl('room')
-                 . " WHERE area_id = ? AND disabled = 0 ORDER BY room_name";
+                 . " WHERE area_id = ? AND disabled = 0 ORDER BY sort_key";
       $rooms = db()->query($sql_rooms, array($area_id));
     }
     catch (\Exception $e)
