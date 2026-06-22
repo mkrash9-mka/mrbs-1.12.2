@@ -842,6 +842,32 @@ button[type="submit"]:hover {
   border-color: transparent !important;
 }
 
+/* Month/year header: smaller + bold so "<  Month  Year  >" reliably fits
+   on one line instead of wrapping the year underneath the month name. */
+.flatpickr-current-month {
+  font-size: .8rem !important;
+  font-weight: 700 !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+  font-size: .8rem !important;
+  font-weight: 700 !important;
+}
+
+/* Weekday header (Sun Mon Tue ...) — smaller + bold to match */
+.flatpickr-weekday {
+  font-size: .7rem !important;
+  font-weight: 700 !important;
+}
+
+/* Day grid numbers — smaller + bold throughout */
+.flatpickr-day {
+  font-size: .8rem;
+  font-weight: 700;
+  color: #1F2937;
+}
+
 /* Selected day: bold, high-contrast text on the indigo highlight circle */
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
@@ -859,20 +885,15 @@ button[type="submit"]:hover {
   color: #fff !important;
 }
 
-/* Today (when not also selected) and ordinary days: clearer weight/contrast */
+/* Today (when not also selected): clearer weight/contrast */
 .flatpickr-day.today {
-  font-weight: 600;
+  font-weight: 700;
   border-color: var(--modern-primary);
-}
-
-.flatpickr-day {
-  font-weight: 500;
-  color: #1F2937;
 }
 
 .flatpickr-day.prevMonthDay,
 .flatpickr-day.nextMonthDay {
-  font-weight: 400;
+  font-weight: 500;
   color: #9CA3AF;
 }
 

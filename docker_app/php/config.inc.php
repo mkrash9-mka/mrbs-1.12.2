@@ -9,3 +9,4 @@ $db_login = "mrbs";
 $db_password = "mrbs";
 $db_tbl_prefix = "mrbs_";
 $db_persist = FALSE;
+$theme = "modern";
