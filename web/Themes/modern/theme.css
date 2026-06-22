@@ -861,10 +861,12 @@ button[type="submit"]:hover {
   font-weight: 700 !important;
 }
 
-/* Day grid numbers — smaller + bold throughout */
+/* Day grid numbers — smaller, normal weight. Bold is reserved for the
+   selected date only (see .flatpickr-day.selected below), so it stands
+   out instead of every day in the grid looking the same. */
 .flatpickr-day {
   font-size: .8rem;
-  font-weight: 700;
+  font-weight: 400;
   color: #1F2937;
 }
 
@@ -885,15 +887,15 @@ button[type="submit"]:hover {
   color: #fff !important;
 }
 
-/* Today (when not also selected): clearer weight/contrast */
+/* Today (when not also selected): outlined, but not bold */
 .flatpickr-day.today {
-  font-weight: 700;
+  font-weight: 400;
   border-color: var(--modern-primary);
 }
 
 .flatpickr-day.prevMonthDay,
 .flatpickr-day.nextMonthDay {
-  font-weight: 500;
+  font-weight: 400;
   color: #9CA3AF;
 }
 
