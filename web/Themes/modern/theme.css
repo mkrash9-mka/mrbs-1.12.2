@@ -338,14 +338,52 @@ body {
   color: #818CF8;
 }
 
-.mrbs-sidebar-logoff,
+.mrbs-sidebar-actions,
 .mrbs-sidebar-logon {
   display: flex;
+  gap: 8px;
 }
 
-.mrbs-auth-form {
+.mrbs-sidebar-actions .mrbs-auth-form {
+  flex: 1;
+  width: auto;
+}
+
+.mrbs-sidebar-logon .mrbs-auth-form {
   display: block;
   width: 100%;
+}
+
+.mrbs-sidebar-account {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  background: rgba(99,102,241,.2);
+  border: 1px solid rgba(99,102,241,.3);
+  border-radius: 6px;
+  color: #C7D2FE;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mrbs-sidebar-account:hover {
+  background: rgba(99,102,241,.35);
+  color: #fff;
+}
+
+.mrbs-sidebar-account i {
+  font-size: 14px;
+  flex: 0 0 auto;
+}
+
+.mrbs-sidebar-account span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mrbs-auth-btn {

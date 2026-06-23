@@ -206,7 +206,10 @@ if [[ "$ATTEMPT_AUTO_UPGRADE" == "true" ]]; then
                 --data-urlencode "csrf_token=${TOKEN}" \
                 "$SITE_URL")"
 
-            if echo "$RESULT" | grep -qi 'upgrade_completed\|already at version\|already_at_version'; then
+            # Match the rendered vocab text, not the vocab key — MRBS shows the
+            # human-readable string (eg "Database upgrade successfully completed.")
+            # in the response, never the internal key name.
+            if echo "$RESULT" | grep -qi 'successfully completed\|already at version'; then
                 success "Database schema upgrade completed."
             else
                 warn "Could not confirm the schema upgrade succeeded from the response."

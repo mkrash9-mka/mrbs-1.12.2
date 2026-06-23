@@ -370,6 +370,7 @@ $vocab["users.last_login"]          = "Last login";
 $vocab["unknown_user"]              = "Unknown user";
 $vocab["login"]                     = "Log in";
 $vocab["logoff"]                    = "Log off";
+$vocab["change_password"]           = "Change password";
 $vocab["register_new_account"]      = "Register for a new account";
 $vocab["registration_pending"]      = "Thank you for registering. Your account is now pending approval by an administrator. You will be able to log in once it has been approved.";
 $vocab["registration_unavailable"]  = "New account registration is not currently available. Please contact your administrator.";

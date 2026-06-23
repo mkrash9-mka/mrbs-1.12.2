@@ -352,6 +352,22 @@ function print_report_link(User $user) : void
 }
 
 
+// "Change password" link. edit_users.php already lets a logged-in user edit their
+// own record (including password) via can_edit_user(), but only
+// auth()->canCreateUsers() (true for the 'db' auth type) actually shows that page
+// — other auth types (LDAP, CAS, etc.) manage passwords externally.
+function print_account_link(User $user) : void
+{
+  if (!auth()->canCreateUsers())
+  {
+    return;
+  }
+
+  $url = multisite('edit_users.php?action=edit&id=' . $user->id);
+  echo '<a href="' . escape_html($url) . '">' . get_vocab('change_password') . "</a>\n";
+}
+
+
 function print_logonoff_button(array $params, string $value) : void
 {
   $form = new Form($params['method']);
@@ -468,6 +484,7 @@ function print_banner(?array $context, $simple=false, $omit_login=false) : void
     if (isset($mrbs_user) && (!$auth['allow_anonymous_booking'] || ($mrbs_user->username !== '')))
     {
       print_report_link($mrbs_user);
+      print_account_link($mrbs_user);
       print_logoff();
     }
     elseif (!$omit_login)
