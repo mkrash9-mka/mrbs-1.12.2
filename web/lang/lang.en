@@ -360,6 +360,7 @@ $vocab["users.last_login"]          = "Last login";
 $vocab["unknown_user"]              = "Unknown user";
 $vocab["login"]                     = "Log in";
 $vocab["logoff"]                    = "Log off";
+$vocab["change_password"]           = "Change password";
 $vocab["username_or_email"]         = "Username or email address";
 $vocab["lost_password"]             = "Lost your password?";
 $vocab["get_new_password"]          = "Get new password";
