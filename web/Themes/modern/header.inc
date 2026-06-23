@@ -335,6 +335,25 @@ function print_report_link(User $user) : void
 }
 
 
+// "Change password" link in the sidebar footer. edit_users.php already lets a
+// logged-in user edit their own record (including password) via can_edit_user(),
+// but only auth()->canCreateUsers() (true for the 'db' auth type) actually shows
+// that page — other auth types (LDAP, CAS, etc.) manage passwords externally.
+function print_account_link(User $user) : void
+{
+  if (!auth()->canCreateUsers())
+  {
+    return;
+  }
+
+  $url = multisite('edit_users.php?action=edit&id=' . $user->id);
+  echo '<a href="' . escape_html($url) . '" class="mrbs-sidebar-account" title="' . get_vocab('change_password') . '">';
+  echo '<i class="ti ti-key" aria-hidden="true"></i>';
+  echo '<span>' . get_vocab('change_password') . '</span>';
+  echo "</a>\n";
+}
+
+
 function print_logonoff_button(array $params, string $value) : void
 {
   $form = new Form($params['method']);
@@ -587,7 +606,8 @@ function print_banner(?array $context, $simple = false, $omit_login = false) : v
       echo '</div>';
       echo '</div>' . "\n";
 
-      echo '<div class="mrbs-sidebar-logoff">';
+      echo '<div class="mrbs-sidebar-actions">';
+      print_account_link($mrbs_user);
       print_logoff();
       echo '</div>' . "\n";
     }
