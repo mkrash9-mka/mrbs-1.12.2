@@ -338,8 +338,7 @@ body {
   color: #818CF8;
 }
 
-.mrbs-sidebar-actions,
-.mrbs-sidebar-logon {
+.mrbs-sidebar-actions {
   display: flex;
   gap: 8px;
 }
@@ -347,6 +346,14 @@ body {
 .mrbs-sidebar-actions .mrbs-auth-form {
   flex: 1;
   width: auto;
+}
+
+/* Stacked, not side-by-side: "Register for a new account" is too long to
+   share a row with "Log in" at this sidebar width without clipping. */
+.mrbs-sidebar-logon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .mrbs-sidebar-logon .mrbs-auth-form {
@@ -1570,17 +1577,26 @@ p.error {
 
 /* ── "Register" link under the sidebar login form ───────────────── */
 .mrbs-sidebar-register {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  margin-top: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
   font-size: 11px;
-  color: #A5B4FC;
+  font-weight: 500;
+  background: rgba(99,102,241,.2);
+  border: 1px solid rgba(99,102,241,.3);
+  border-radius: 6px;
+  color: #C7D2FE;
   text-decoration: none;
 }
 
 .mrbs-sidebar-register:hover {
+  background: rgba(99,102,241,.35);
   color: #fff;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 

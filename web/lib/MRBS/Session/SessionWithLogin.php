@@ -12,6 +12,7 @@ use MRBS\Form\FieldInputText;
 use MRBS\Form\Form;
 use function MRBS\auth;
 use function MRBS\get_form_var;
+use function MRBS\get_site_setting;
 use function MRBS\get_vocab;
 use function MRBS\location_header;
 use function MRBS\multisite;
@@ -262,6 +263,20 @@ abstract class SessionWithLogin extends Session
       $a = new ElementA();
       $a->setAttribute('href', multisite('reset_password.php'))
         ->setText(get_vocab('lost_password'));
+      $field->addControl($a);
+      $fieldset->addElement($field);
+      $form->addElement($fieldset);
+    }
+
+    // Self-registration is only meaningful for the 'db' auth type, and only
+    // when the admin has opted in via the Site Settings "User Registration" setting.
+    if (auth()->canCreateUsers() && (get_site_setting('enable_registration', '0') === '1'))
+    {
+      $fieldset = new ElementFieldset();
+      $field = new FieldDiv();
+      $a = new ElementA();
+      $a->setAttribute('href', multisite('register.php'))
+        ->setText(get_vocab('register_new_account'));
       $field->addControl($a);
       $fieldset->addElement($field);
       $form->addElement($fieldset);
