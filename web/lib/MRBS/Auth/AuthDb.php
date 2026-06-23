@@ -103,7 +103,7 @@ class AuthDb extends AuthDbAbstract
     // messy.  We could use STRCMP, but that's MySQL only.
 
     // Usernames are unique in the users table, so we only look for one.
-    $sql = "SELECT password_hash, name
+    $sql = "SELECT password_hash, name, approved
             FROM " . _tbl('users') . "
            WHERE " . $this->connection()->syntax_casesensitive_equals('name', mb_strtolower($user), $sql_params) . "
            LIMIT 1";
@@ -118,7 +118,16 @@ class AuthDb extends AuthDbAbstract
       return false;
     }
 
-    return ($this->checkPassword($pass, $row['password_hash'], 'name', $row['name'])) ? $row['name'] : false;
+    // A self-registered account that hasn't yet been approved by an admin can't
+    // log in. We deliberately give the same generic login failure as a wrong
+    // password, rather than a distinct message, to avoid revealing account state
+    // to an unauthenticated visitor.
+    if (!$this->checkPassword($pass, $row['password_hash'], 'name', $row['name']))
+    {
+      return false;
+    }
+
+    return (array_key_exists('approved', $row) && empty($row['approved'])) ? false : $row['name'];
   }
 
 
@@ -144,10 +153,12 @@ class AuthDb extends AuthDbAbstract
     $users = self::getUsersByEmail($email);
 
     // Check all the users that have this email address and password hash.
+    // A self-registered account pending approval can't log in - see validateUsername().
     foreach($users as $user)
     {
       if (isset($user['password_hash']) &&
-          $this->checkPassword($pass, $user['password_hash'], 'email', $email))
+          $this->checkPassword($pass, $user['password_hash'], 'email', $email) &&
+          !(array_key_exists('approved', $user) && empty($user['approved'])))
       {
         $valid_usernames[] = $user['name'];
       }

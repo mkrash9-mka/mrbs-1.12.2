@@ -5,6 +5,7 @@ namespace MRBS;
 use MRBS\Form\ElementDiv;
 use MRBS\Form\ElementFieldset;
 use MRBS\Form\ElementImg;
+use MRBS\Form\ElementP;
 use MRBS\Form\FieldInputCheckbox;
 use MRBS\Form\FieldInputEmail;
 use MRBS\Form\FieldInputFile;
@@ -56,6 +57,8 @@ if (($server['REQUEST_METHOD'] ?? '') === 'POST')
   $smtp_auth       = get_form_var('smtp_auth', 'bool', false, INPUT_POST);
   $smtp_username   = trim(get_form_var('smtp_username', 'string', '', INPUT_POST));
   $smtp_password   = get_form_var('smtp_password', 'string', '', INPUT_POST);
+
+  $enable_registration = get_form_var('enable_registration', 'bool', false, INPUT_POST);
 
   if ($company === '')
   {
@@ -155,6 +158,8 @@ if (($server['REQUEST_METHOD'] ?? '') === 'POST')
       set_site_setting('smtp_password', $smtp_password);
     }
 
+    set_site_setting('enable_registration', $enable_registration ? '1' : '0');
+
     location_header(multisite('edit_site_settings.php?msg=saved'));
   }
 }
@@ -174,6 +179,8 @@ $current_smtp_port     = get_site_setting('smtp_port', (string) $smtp_settings['
 $current_smtp_secure   = get_site_setting('smtp_secure', $smtp_settings['secure']);
 $current_smtp_auth     = get_site_setting('smtp_auth', $smtp_settings['auth'] ? '1' : '0');
 $current_smtp_username = get_site_setting('smtp_username', $smtp_settings['username']);
+
+$current_enable_registration = get_site_setting('enable_registration', '0');
 
 
 $context = array(
@@ -378,6 +385,25 @@ $field->setLabel(get_vocab('site_settings_smtp_password'))
           'autocomplete' => 'new-password',
         ));
 $fieldset->addElement($field);
+
+$form->addElement($fieldset);
+
+// ---- User registration ----
+$fieldset = new ElementFieldset();
+$fieldset->addLegend(get_vocab('site_settings_registration'));
+
+$field = new FieldInputCheckbox();
+$field->setLabel(get_vocab('site_settings_enable_registration'))
+      ->setControlAttributes(array('id' => 'enable_registration', 'name' => 'enable_registration', 'value' => '1'));
+if ($current_enable_registration === '1')
+{
+  $field->setChecked(true);
+}
+$fieldset->addElement($field);
+
+$p = new ElementP();
+$p->setText(get_vocab('site_settings_registration_note'));
+$fieldset->addElement($p);
 
 $form->addElement($fieldset);
 
