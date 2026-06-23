@@ -241,12 +241,13 @@ CREATE TABLE mrbs_users
   last_login        int DEFAULT '0' NOT NULL,
   reset_key_hash    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   reset_key_expiry  int DEFAULT 0 NOT NULL,
+  approved          tinyint DEFAULT 1 NOT NULL,  /* 0 = pending admin approval (self-registered) */
 
   PRIMARY KEY (id),
   UNIQUE KEY uq_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO mrbs_variables (variable_name, variable_content)
-  VALUES ( 'db_version', '82');
+  VALUES ( 'db_version', '83');
 INSERT INTO mrbs_variables (variable_name, variable_content)
   VALUES ( 'local_db_version', '1');

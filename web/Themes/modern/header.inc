@@ -397,6 +397,14 @@ function print_logon() : void
       print_logonoff_button($form_params, get_vocab('login'));
     }
   }
+
+  // Self-registration is only meaningful for the 'db' auth type, and only
+  // when the admin has opted in via the Site Settings "User Registration" setting.
+  if (auth()->canCreateUsers() && (get_site_setting('enable_registration', '0') === '1'))
+  {
+    $url = multisite('register.php');
+    echo '<a href="' . escape_html($url) . '" class="mrbs-sidebar-register">' . get_vocab('register_new_account') . "</a>\n";
+  }
 }
 
 

@@ -117,6 +117,39 @@ function can_edit_user($target)
 }
 
 
+// Emails a self-registered user once their registration has been approved or rejected.
+// $row is the user's DB row (name, display_name, email) read before approving/deleting it.
+function notify_registration_outcome(array $row, bool $approved) : void
+{
+  global $mail_settings;
+
+  if (empty($row['email']))
+  {
+    return;
+  }
+
+  $addresses = array(
+    'from' => $mail_settings['from'],
+    'to'   => $row['email'],
+  );
+
+  $name = ($row['display_name'] !== '') ? $row['display_name'] : $row['name'];
+
+  if ($approved)
+  {
+    $subject = get_vocab('mail_subject_user_approved');
+    $body = '<p>' . get_vocab('mail_body_user_approved', escape_html($name)) . "</p>\n";
+  }
+  else
+  {
+    $subject = get_vocab('mail_subject_user_rejected');
+    $body = '<p>' . get_vocab('mail_body_user_rejected', escape_html($name)) . "</p>\n";
+  }
+
+  MailQueue::add($addresses, $subject, strip_tags($body), $body, null, Language::MAIL_CHARSET);
+}
+
+
 function output_row($row)
 {
   global $is_ajax, $json_data;
@@ -628,7 +661,7 @@ $users = auth()->getUsers();
 \*---------------------------------------------------------------------------*/
 
 // Check the CSRF token if we're going to be altering the database
-if (isset($action) && in_array($action, array('delete', 'update')))
+if (isset($action) && in_array($action, array('delete', 'update', 'approve_registration', 'reject_registration')))
 {
   Form::checkToken();
 }
@@ -823,6 +856,7 @@ if (isset($action) && ( ($action == "edit") or ($action == "add") ))
       case 'last_login':
       case 'reset_key_hash':
       case 'reset_key_expiry':
+      case 'approved':      // Only touched by the approve/reject actions, never this form
         break;
 
       case 'level':
@@ -942,8 +976,13 @@ if (isset($action) && ($action == "update"))
 
     // first, get all the other form variables, except for password_hash which is
     // a special case,and put them into an array, $values, which  we will use
-    // for entering into the database assuming we pass validation
-    if ($fieldname !== 'password_hash')
+    // for entering into the database assuming we pass validation.
+    // 'approved' is also excluded: there's no form field for it here (admin-created/
+    // edited users are never subject to the self-registration approval gate), and
+    // since it's a boolean-nature column with no rendered input, the checkbox-to-
+    // boolean coercion below would otherwise silently default it to 0 and lock the
+    // user out. It's only ever touched by the approve/reject actions further down.
+    if (($fieldname !== 'password_hash') && ($fieldname !== 'approved'))
     {
       $values[$fieldname] = get_form_var(VAR_PREFIX. $fieldname, $type);
       // Turn checkboxes into booleans
@@ -1018,6 +1057,9 @@ if (isset($action) && ($action == "update"))
         // Don't update this field ourselves at all
         unset($fields[$index]);
         unset($values[$fieldname]);
+        break;
+      case 'approved':
+        // Never set via this form - see the comment above where $values is built.
         break;
       default:
         $q_string .= "&$fieldname=" . $values[$fieldname];
@@ -1148,6 +1190,14 @@ if (isset($action) && ($action == "update"))
       continue;
     }
 
+    // 'approved' is never set via this generic form (see the comment where $values
+    // is built above) - leave it out of the INSERT/UPDATE entirely so new rows get
+    // the column's DEFAULT (1, ie already approved) and existing rows are untouched.
+    if ($fieldname === 'approved')
+    {
+      continue;
+    }
+
     if ($fieldname != 'id')
     {
       $value = $values[$fieldname];
@@ -1257,8 +1307,48 @@ if (isset($action) && ($action == "delete"))
 }
 
 /*---------------------------------------------------------------------------*\
+|             Approve or reject a pending self-registration                   |
+\*---------------------------------------------------------------------------*/
+
+if (isset($action) && in_array($action, array('approve_registration', 'reject_registration')))
+{
+  // Only user admins can approve/reject registrations - same gate as delete.
+  if (!is_user_admin())
+  {
+    showAccessDenied();
+    exit();
+  }
+
+  $sql = "SELECT name, display_name, email FROM " . _tbl('users') . " WHERE id=? AND approved=0";
+  $result = db()->query($sql, array($id));
+  $pending_row = $result->next_row_keyed();
+
+  if ($pending_row !== false)
+  {
+    if ($action === 'approve_registration')
+    {
+      db()->command("UPDATE " . _tbl('users') . " SET approved=1 WHERE id=?", array($id));
+      notify_registration_outcome($pending_row, true);
+    }
+    else
+    {
+      db()->command("DELETE FROM " . _tbl('users') . " WHERE id=?", array($id));
+      notify_registration_outcome($pending_row, false);
+    }
+  }
+
+  /* Success. Do not display a message. Simply fall through into the list display. */
+}
+
+/*---------------------------------------------------------------------------*\
 |                          Display the list of users                          |
 \*---------------------------------------------------------------------------*/
+
+// Split off pending self-registrations so the main table only ever shows
+// approved users. This has to happen after the $initial_user_creation check
+// above, which needs the unfiltered row count to detect a genuinely empty table.
+$pending_users = array_filter($users, function($u) { return empty($u['approved']); });
+$users = array_filter($users, function($u) { return !empty($u['approved']); });
 
 /* Print the standard MRBS header */
 
@@ -1293,6 +1383,40 @@ if (!$is_ajax)
 
     $form->render();
   }
+
+  if (is_user_admin() && !empty($pending_users))
+  {
+    echo "<div id=\"pending_registrations\">\n";
+    echo "<h3>" . get_vocab('pending_registrations') . "</h3>\n";
+    echo "<ul>\n";
+
+    foreach ($pending_users as $pending_user)
+    {
+      echo "<li>\n";
+      echo '<span class="pending_registration_name">'
+         . escape_html($pending_user['display_name'] ?: $pending_user['name'])
+         . ' &lt;' . escape_html($pending_user['email']) . "&gt;</span>\n";
+
+      foreach (array('approve_registration' => 'approve', 'reject_registration' => 'reject') as $reg_action => $vocab_tag)
+      {
+        $reg_form = new Form(Form::METHOD_POST);
+        $reg_form->setAttributes(array('action' => multisite(this_page())))
+                 ->addHiddenInputs(array('action' => $reg_action, 'id' => $pending_user['id']));
+        $reg_submit = new ElementInputSubmit();
+        $reg_submit->setAttributes(array(
+          'value' => get_vocab($vocab_tag),
+          'class' => 'pending_registration_' . $vocab_tag,
+        ));
+        $reg_form->addElement($reg_submit);
+        $reg_form->render();
+      }
+
+      echo "</li>\n";
+    }
+
+    echo "</ul>\n";
+    echo "</div>\n";
+  }
 }
 
 if ($initial_user_creation != 1)   // don't print the user table if there are no users
@@ -1306,7 +1430,9 @@ if ($initial_user_creation != 1)   // don't print the user table if there are no
       'name',
       'display_name',
       'reset_key_hash',
-      'reset_key_expiry'
+      'reset_key_expiry',
+      'approved'  // every row in this table is already approved=1; see the
+                  // "Pending registrations" section above for approved=0 rows
     );
 
   // Add in the private fields to the list of columns to be ignored

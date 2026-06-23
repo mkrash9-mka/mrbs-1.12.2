@@ -86,6 +86,14 @@ function get_page_level($page)
     return 0;
   }
 
+  // Same applies to the public self-registration form - you won't be logged in yet.
+  // (The pages themselves check the 'enable_registration' site setting and redirect
+  // away if self-registration hasn't been enabled by the admin.)
+  if (in_array($page, array('register.php', 'register_handler.php')))
+  {
+    return 0;
+  }
+
   // Otherwise ...
   switch ($page)
   {

@@ -1377,6 +1377,214 @@ p.error {
 
 
 /* ════════════════════════════════════════════════════════════════
+   Self-registration form — web/register.php (form id="register")
+   Simpler field set than edit_entry.php (no dates/rooms/repeat), so
+   this is a smaller, self-contained version of the same table-layout
+   reset used for #main.standard above. See the comment on that block
+   for why display/float have to be reset at every level.
+   ════════════════════════════════════════════════════════════════ */
+
+#register.standard {
+  display: block !important;
+  float: none !important;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#register.standard fieldset {
+  display: block !important;
+  float: none !important;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--modern-radius-lg);
+  box-shadow: var(--modern-shadow);
+  padding: 28px 32px;
+  margin: 0 0 20px 0;
+}
+
+#register.standard fieldset legend {
+  display: block;
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--modern-primary);
+  padding: 0 0 14px 0;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #F3F4F6;
+  width: 100%;
+}
+
+#register.standard fieldset > div {
+  display: block !important;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+#register.standard fieldset > div:last-child {
+  margin-bottom: 0;
+}
+
+#register.standard fieldset > div > * {
+  display: block !important;
+  float: none !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#register.standard fieldset > div > label {
+  font-weight: 600;
+  font-size: .8rem;
+  color: #374151;
+  text-align: left !important;
+  padding: 0 !important;
+  margin: 0 0 6px 0;
+}
+
+#register.standard input[type="text"],
+#register.standard input[type="email"],
+#register.standard input[type="password"] {
+  border: 1px solid #D1D5DB;
+  border-radius: var(--modern-radius);
+  padding: 10px 12px;
+  font-size: .9rem;
+  color: #111827;
+  background: #fff;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+#register.standard input:focus {
+  outline: none;
+  border-color: var(--modern-primary);
+  box-shadow: 0 0 0 3px var(--modern-primary-light);
+}
+
+#register.standard #pwd_policy {
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: .8rem;
+  color: #6B7280;
+}
+
+#register.standard #pwd_policy.error {
+  color: #DC2626;
+}
+
+#register.standard p.error {
+  color: #DC2626;
+  font-weight: 500;
+  font-size: .85rem;
+}
+
+#register.standard fieldset:last-of-type {
+  display: flex !important;
+  justify-content: flex-end;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 8px 0 0;
+}
+
+#register.standard input[type="submit"] {
+  width: auto !important;
+  background: var(--modern-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--modern-radius);
+  padding: 11px 26px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+#register.standard input[type="submit"]:hover {
+  background: var(--modern-primary-dark);
+}
+
+/* ── Pending registrations (web/edit_users.php) ─────────────────── */
+#pending_registrations {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: var(--modern-radius-lg);
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+#pending_registrations h3 {
+  margin: 0 0 10px 0;
+  font-size: .9rem;
+  color: #92400E;
+}
+
+#pending_registrations ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#pending_registrations li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid #FDE68A;
+}
+
+#pending_registrations li:first-child {
+  border-top: none;
+}
+
+.pending_registration_name {
+  flex: 1;
+  font-size: .85rem;
+  color: #374151;
+}
+
+#pending_registrations form {
+  display: inline-block;
+}
+
+.pending_registration_approve {
+  background: #16A34A !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--modern-radius);
+  padding: 6px 14px !important;
+  font-size: .8rem !important;
+  cursor: pointer;
+}
+
+.pending_registration_reject {
+  background: #fff !important;
+  color: #DC2626 !important;
+  border: 1px solid #FCA5A5 !important;
+  border-radius: var(--modern-radius);
+  padding: 6px 14px !important;
+  font-size: .8rem !important;
+  cursor: pointer;
+}
+
+/* ── "Register" link under the sidebar login form ───────────────── */
+.mrbs-sidebar-register {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #A5B4FC;
+  text-decoration: none;
+}
+
+.mrbs-sidebar-register:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
    Site settings page — web/edit_site_settings.php
    ════════════════════════════════════════════════════════════════ */
 
