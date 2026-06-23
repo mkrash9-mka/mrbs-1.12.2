@@ -448,8 +448,10 @@ if (is_admin() || !empty($enabled_areas))
           echo "<th>" . get_vocab("enabled") . "</th>\n";
         }
         // ignore these columns, either because we don't want to display them,
-        // or because we have already displayed them in the header column
-        $ignore = array('id', 'area_id', 'room_name', 'disabled', 'sort_key', 'custom_html');
+        // or because we have already displayed them in the header column.
+        // sort_key is shown as its own "Sort key" column (rather than ignored)
+        // so admins can see and sort by the number that orders the room list.
+        $ignore = array('id', 'area_id', 'room_name', 'disabled', 'custom_html');
         foreach($fields as $field)
         {
           if (!in_array($field['name'], $ignore))
@@ -461,6 +463,7 @@ if (is_admin() || !empty($enabled_areas))
               case 'description':
               case 'invalid_types':
               case 'room_admin_email':
+              case 'sort_key':
                 $text = get_vocab($field['name']);
                 break;
               // any user defined fields
