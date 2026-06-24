@@ -138,3 +138,68 @@ function apply_site_settings() : void
     $smtp_settings['password'] = $settings['smtp_password'];
   }
 }
+
+
+const MAIL_ACTIVITY_LOG_MAX = 20;
+
+
+// Appends an entry to the rolling mail-activity log (stored in mrbs_variables,
+// capped at the most recent MAIL_ACTIVITY_LOG_MAX entries). Called from
+// MailQueue::sendMail() for every email MRBS sends (not just manual tests), so
+// admins can see whether real notification emails are actually going out.
+// Best-effort: a logging failure must never break the actual mail send, so
+// every DB operation here is wrapped.
+function log_mail_activity(string $to, string $subject, string $backend, bool $success, ?string $error = null) : void
+{
+  try
+  {
+    $log = json_decode(get_site_setting('mail_activity_log', '[]') ?? '[]', true);
+    if (!is_array($log))
+    {
+      $log = array();
+    }
+
+    $log[] = array(
+      'time'    => time(),
+      'to'      => $to,
+      'subject' => $subject,
+      'backend' => $backend,
+      'success' => $success,
+      'error'   => $error,
+    );
+
+    if (count($log) > MAIL_ACTIVITY_LOG_MAX)
+    {
+      $log = array_slice($log, -MAIL_ACTIVITY_LOG_MAX);
+    }
+
+    set_site_setting('mail_activity_log', json_encode($log));
+  }
+  catch (\Throwable $e)
+  {
+    // Logging is best-effort only.
+  }
+}
+
+
+// Returns the rolling mail-activity log, most recent first.
+function get_mail_activity_log() : array
+{
+  try
+  {
+    $log = json_decode(get_site_setting('mail_activity_log', '[]') ?? '[]', true);
+  }
+  catch (\Throwable $e)
+  {
+    return array();
+  }
+
+  return is_array($log) ? array_reverse($log) : array();
+}
+
+
+// Clears the rolling mail-activity log.
+function clear_mail_activity_log() : void
+{
+  set_site_setting('mail_activity_log', null);
+}

@@ -48,6 +48,10 @@ class Mailer extends PHPMailer
 
       case 'smtp':
         $this->isSMTP();
+        // PHPMailer's own default (300s) means a misconfigured, unreachable or
+        // firewalled SMTP host hangs the whole request - and therefore the
+        // page load - for up to 5 minutes. Fail fast instead.
+        $this->Timeout = 10;
         $this->Host = $smtp_settings['host'];
         $this->Port = $smtp_settings['port'];
         $this->SMTPAuth = $smtp_settings['auth'];

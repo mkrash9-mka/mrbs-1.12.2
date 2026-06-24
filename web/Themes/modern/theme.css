@@ -591,6 +591,19 @@ body {
   font-weight: 500 !important;
 }
 
+/* The core day/week/month/year nav (nav.view, used in the all-rooms/area
+   table views) colours its selected button using $banner_back_color, which
+   this theme sets to white for its own banner - leaving white text on a
+   white background. Override with the same primary colour used everywhere
+   else for an "active" state. */
+nav.view a.selected,
+nav.view a.selected:link,
+nav.view a.selected:visited {
+  background: var(--modern-primary) !important;
+  box-shadow: none;
+  color: #fff !important;
+}
+
 /* Goto date form (JS shows this) */
 .mrbs-goto-date {
   display: flex;
@@ -1627,6 +1640,12 @@ p.error {
   border: 1px solid #A7F3D0;
 }
 
+.mrbs-settings-flash--error {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
 #form_site_settings fieldset {
   background: #fff;
   border: 1px solid #E5E7EB;
@@ -1722,6 +1741,39 @@ p.error {
 
 #form_site_settings input[type="submit"]:hover {
   background: var(--modern-primary-dark);
+}
+
+#form_site_settings input[type="submit"][name="test_smtp_button"] {
+  background: #fff;
+  color: var(--modern-primary);
+  border: 1px solid var(--modern-primary);
+}
+
+#form_site_settings input[type="submit"][name="test_smtp_button"]:hover {
+  background: var(--modern-primary-light);
+}
+
+.mrbs-mail-activity {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+
+.mrbs-mail-activity th,
+.mrbs-mail-activity td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #E5E7EB;
+  word-break: break-word;
+}
+
+.mrbs-mail-activity th {
+  font-weight: 600;
+  color: #374151;
+}
+
+.mrbs-mail-activity-fail td {
+  color: #B91C1C;
 }
 
 @media (max-width: 600px) {
