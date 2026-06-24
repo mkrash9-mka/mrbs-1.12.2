@@ -16,6 +16,17 @@ class MailQueue
 {
   protected static $mails = array();
 
+  // Set by sendMail() on failure so callers that invoke it directly (eg the
+  // Site Settings "send test email" feature) can show the real PHPMailer
+  // error, since sendMail() itself only returns a bool.
+  protected static $lastError = null;
+
+
+  public static function getLastError() : ?string
+  {
+    return self::$lastError;
+  }
+
 
   /**
    * Add an email to the queue for sending
@@ -130,8 +141,15 @@ class MailQueue
    * @param string      $charset      character set used in body
    * @return bool                     TRUE on success, FALSE on failure
    * @throws Exception
+   *
+   * Public (rather than the queue-internal protected) so that the Site
+   * Settings "send test email" feature can call it directly for an
+   * immediate, synchronous result without going through the deferred
+   * add()/flush() queue - which never clears itself after flushing, so a
+   * manually-triggered flush() would risk re-sending the same mail again
+   * at the real end-of-request shutdown flush.
    */
-  protected static function sendMail(
+  public static function sendMail(
       array $addresses,
       string $subject,
       string $text_body,
@@ -140,6 +158,8 @@ class MailQueue
       string $charset = 'us-ascii'
     ) : bool
   {
+    self::$lastError = null;
+
     // Modify the include path because this is run after shutdown when the working directory may have
     // changed (see the note in https://www.php.net/manual/en/function.register-shutdown-function.php).
     // Put the new path at the beginning of the list in case there is an open_basedir restriction in effect
@@ -401,12 +421,15 @@ class MailQueue
       if ($result)
       {
         mail_debug('Email sent successfully');
+        log_mail_activity($addresses['to'] ?? '', $subject, $mail_settings['admin_backend'], true);
         return true;
       }
     }
 
     error_log('Error sending email: ' . $mail->ErrorInfo);
     mail_debug('Failed to send email: ' . $mail->ErrorInfo);
+    self::$lastError = $mail->ErrorInfo;
+    log_mail_activity($addresses['to'] ?? '', $subject, $mail_settings['admin_backend'], false, $mail->ErrorInfo);
 
     return false;
   }
