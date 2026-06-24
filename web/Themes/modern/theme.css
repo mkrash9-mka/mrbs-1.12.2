@@ -591,6 +591,19 @@ body {
   font-weight: 500 !important;
 }
 
+/* The core day/week/month/year nav (nav.view, used in the all-rooms/area
+   table views) colours its selected button using $banner_back_color, which
+   this theme sets to white for its own banner - leaving white text on a
+   white background. Override with the same primary colour used everywhere
+   else for an "active" state. */
+nav.view a.selected,
+nav.view a.selected:link,
+nav.view a.selected:visited {
+  background: var(--modern-primary) !important;
+  box-shadow: none;
+  color: #fff !important;
+}
+
 /* Goto date form (JS shows this) */
 .mrbs-goto-date {
   display: flex;
