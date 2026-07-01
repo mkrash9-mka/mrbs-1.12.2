@@ -269,8 +269,6 @@ $context = array(
 
 print_header($context);
 
-echo "<h1>" . get_vocab("pending") . "</h1>\n";
-
 // Get a list of all bookings awaiting approval
 // We are only interested in areas where approval is required
 
@@ -314,6 +312,36 @@ while (false !== ($row = $res->next_row_keyed()))
     $rows[] = $row;
   }
 }
+
+echo '<div class="mrbs-stat-cards">';
+echo '<div class="mrbs-stat-card mrbs-stat-card--highlight">';
+echo '<div class="mrbs-stat-card-value">' . count($rows) . '</div>';
+echo '<div class="mrbs-stat-card-label">' . get_vocab('pending') . '</div>';
+echo '</div>';
+echo '</div>' . "\n";
+
+echo '<div class="mrbs-panel">' . "\n";
+
+echo '<div class="mrbs-panel-heading">';
+echo '<h2 class="mrbs-panel-title">' . get_vocab('pending') . '</h2>';
+echo '<div class="mrbs-panel-search">';
+echo '<div class="mrbs-search-row">';
+echo '<div class="mrbs-search-box">';
+echo '<input type="search" id="pending_search_input" placeholder="' . escape_html(get_vocab('search')) . '">';
+echo '<i class="ti ti-search" aria-hidden="true"></i>';
+echo '</div>';
+echo '<button type="button" id="pending_search_btn" class="mrbs-search-btn">' . escape_html(get_vocab('search_button')) . '</button>';
+echo '</div>';
+echo '<button type="button" id="pending_advance_toggle" class="mrbs-advance-search-toggle" aria-expanded="false">';
+echo escape_html(get_vocab('search_criteria')) . ' <i class="ti ti-chevron-down" aria-hidden="true"></i>';
+echo '</button>';
+echo '</div>'; // mrbs-panel-search
+echo '</div>' . "\n"; // mrbs-panel-heading
+
+echo '<div class="mrbs-advance-filters" id="pending_advance_filters">';
+echo '<select id="pending_filter_area"><option value="">' . escape_html(get_vocab('area')) . '</option></select>';
+echo '<select id="pending_filter_room"><option value="">' . escape_html(get_vocab('room')) . '</option></select>';
+echo '</div>' . "\n";
 
 if (count($rows) == 0)
 {
@@ -367,5 +395,7 @@ else  // display them in a table
   echo "</table>\n";
   echo "</div>\n";
 }
+
+echo "</div>\n"; // mrbs-panel
 
 print_footer();

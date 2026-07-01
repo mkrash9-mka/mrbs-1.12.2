@@ -543,6 +543,46 @@ function print_banner(?array $context, $simple = false, $omit_login = false) : v
     // Logo
     print_header_site_info();
 
+    // User profile (pinned at the top of the sidebar)
+    echo '<div class="mrbs-sidebar-profile">' . "\n";
+
+    $mrbs_user = session()->getCurrentUser();
+    $has_user  = isset($mrbs_user) &&
+                 (!$auth['allow_anonymous_booking'] || ($mrbs_user->username !== ''));
+
+    if ($has_user)
+    {
+      // Build initials
+      $initials   = '';
+      $name_parts = explode(' ', $mrbs_user->display_name);
+      foreach (array_slice($name_parts, 0, 2) as $part)
+      {
+        $initials .= mb_strtoupper(mb_substr($part, 0, 1));
+      }
+      $role = ($mrbs_user->level >= 2) ? 'Admin' : 'User';
+
+      echo '<div class="mrbs-user-chip">';
+      echo '<div class="mrbs-avatar">' . escape_html($initials) . '</div>';
+      echo '<div class="mrbs-user-meta">';
+      print_report_link($mrbs_user);
+      echo '<span class="mrbs-user-role">' . $role . '</span>';
+      echo '</div>';
+      echo '</div>' . "\n";
+
+      echo '<div class="mrbs-sidebar-actions">';
+      print_account_link($mrbs_user);
+      print_logoff();
+      echo '</div>' . "\n";
+    }
+    elseif (!$omit_login)
+    {
+      echo '<div class="mrbs-sidebar-logon">';
+      print_logon();
+      echo '</div>' . "\n";
+    }
+
+    echo "</div>\n"; // mrbs-sidebar-profile
+
     // Primary nav
     echo '<nav class="mrbs-nav" aria-label="Site navigation">' . "\n";
     echo '<p class="mrbs-nav-section-label">Menu</p>' . "\n";
@@ -588,45 +628,6 @@ function print_banner(?array $context, $simple = false, $omit_login = false) : v
     print_sidebar_rooms($current_area, $current_room);
     echo "</div>\n";
 
-    // User profile at bottom
-    echo '<div class="mrbs-sidebar-footer">' . "\n";
-
-    $mrbs_user = session()->getCurrentUser();
-    $has_user  = isset($mrbs_user) &&
-                 (!$auth['allow_anonymous_booking'] || ($mrbs_user->username !== ''));
-
-    if ($has_user)
-    {
-      // Build initials
-      $initials   = '';
-      $name_parts = explode(' ', $mrbs_user->display_name);
-      foreach (array_slice($name_parts, 0, 2) as $part)
-      {
-        $initials .= mb_strtoupper(mb_substr($part, 0, 1));
-      }
-      $role = ($mrbs_user->level >= 2) ? 'Admin' : 'User';
-
-      echo '<div class="mrbs-user-chip">';
-      echo '<div class="mrbs-avatar">' . escape_html($initials) . '</div>';
-      echo '<div class="mrbs-user-meta">';
-      print_report_link($mrbs_user);
-      echo '<span class="mrbs-user-role">' . $role . '</span>';
-      echo '</div>';
-      echo '</div>' . "\n";
-
-      echo '<div class="mrbs-sidebar-actions">';
-      print_account_link($mrbs_user);
-      print_logoff();
-      echo '</div>' . "\n";
-    }
-    elseif (!$omit_login)
-    {
-      echo '<div class="mrbs-sidebar-logon">';
-      print_logon();
-      echo '</div>' . "\n";
-    }
-
-    echo "</div>\n"; // mrbs-sidebar-footer
     echo "</aside>\n"; // mrbs-sidebar
 
     // QR code for kiosk mode
@@ -726,7 +727,7 @@ function print_banner(?array $context, $simple = false, $omit_login = false) : v
                          . (isset($context['room']) ? '&room=' . $context['room'] : ''));
       echo '<a href="' . escape_html($new_url) . '" class="mrbs-new-btn">';
       echo '<i class="ti ti-plus" aria-hidden="true"></i>';
-      echo '<span>' . get_vocab('add_entry') . '</span>';
+      echo '<span>' . get_vocab('addentry') . '</span>';
       echo "</a>\n";
     }
 

@@ -5,12 +5,15 @@
 
 /* ── Variables ─────────────────────────────────────────────── */
 :root {
-  --modern-primary:       #4F46E5;
-  --modern-primary-light: #EEF2FF;
-  --modern-primary-dark:  #3730A3;
-  --modern-sidebar-bg:    #1E1B4B;
-  --modern-sidebar-text:  #A5B4FC;
-  --modern-sidebar-muted: #6366F1;
+  --modern-primary:       #3B78B4;
+  --modern-primary-light: #EAF2FB;
+  --modern-primary-dark:  #2A5A8C;
+  --modern-accent:        #E8792F;
+  --modern-accent-dark:   #C7631F;
+  --modern-sidebar-bg:    #173B5C;
+  --modern-sidebar-text:  #C3D3E6;
+  --modern-sidebar-muted: #2F5A80;
+  --modern-sidebar-label: #8FB3D9;
   --modern-sidebar-w:     200px;
   --modern-topbar-h:      56px;
   --modern-radius:        8px;
@@ -63,12 +66,12 @@ body {
   overflow-x: hidden;
   z-index: 200;
   scrollbar-width: thin;
-  scrollbar-color: rgba(99,102,241,.3) transparent;
+  scrollbar-color: rgba(47,90,128,.5) transparent;
 }
 
 .mrbs-sidebar::-webkit-scrollbar        { width: 4px; }
 .mrbs-sidebar::-webkit-scrollbar-track  { background: transparent; }
-.mrbs-sidebar::-webkit-scrollbar-thumb  { background: rgba(99,102,241,.4); border-radius: 2px; }
+.mrbs-sidebar::-webkit-scrollbar-thumb  { background: rgba(47,90,128,.4); border-radius: 2px; }
 
 /* Logo block */
 .mrbs-logo {
@@ -109,13 +112,13 @@ body {
 .mrbs-company-link {
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: #fff !important;
   text-decoration: none;
 }
 
 .mrbs-app-label {
   font-size: 10px;
-  color: #818CF8;
+  color: var(--modern-sidebar-label);
   letter-spacing: .06em;
 }
 
@@ -126,7 +129,7 @@ body {
 
 .mrbs-nav-section-label {
   font-size: 9px;
-  color: var(--modern-sidebar-muted);
+  color: var(--modern-sidebar-label);
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -159,15 +162,15 @@ body {
 }
 
 .mrbs-nav-item:hover {
-  background: rgba(99,102,241,.2);
-  color: #C7D2FE;
+  background: rgba(47,90,128,.2);
+  color: #D9E8F5;
   text-decoration: none;
 }
 
 .mrbs-nav-item--active,
 .mrbs-nav-item--active:link,
 .mrbs-nav-item--active:visited {
-  background: var(--modern-primary);
+  background: var(--modern-accent);
   color: #fff;
   font-weight: 500;
 }
@@ -203,7 +206,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 5px 8px;
-  color: #818CF8;
+  color: var(--modern-sidebar-label);
   font-size: 12px;
   cursor: pointer;
   background: none;
@@ -214,7 +217,7 @@ body {
 }
 
 .mrbs-area-header:hover {
-  background: rgba(99,102,241,.1);
+  background: rgba(47,90,128,.1);
 }
 
 .mrbs-area-header .ti {
@@ -251,8 +254,8 @@ body {
 }
 
 .mrbs-room-item:hover {
-  background: rgba(99,102,241,.15);
-  color: #C7D2FE;
+  background: rgba(47,90,128,.15);
+  color: #D9E8F5;
   text-decoration: none;
 }
 
@@ -270,11 +273,11 @@ body {
   flex-shrink: 0;
 }
 
-/* Sidebar footer (user chip + logoff) */
-.mrbs-sidebar-footer {
+/* Sidebar profile (user chip + logoff), pinned at the top of the sidebar */
+.mrbs-sidebar-profile {
   padding: 10px 12px;
-  border-top: 1px solid rgba(99,102,241,.2);
-  margin-top: auto;
+  border-bottom: 1px solid rgba(47,90,128,.4);
+  margin-bottom: 4px;
 }
 
 .mrbs-user-chip {
@@ -318,7 +321,7 @@ body {
   padding: 0 !important;
   font-size: 12px !important;
   font-weight: 500;
-  color: #C7D2FE !important;
+  color: #D9E8F5 !important;
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
@@ -335,17 +338,18 @@ body {
 
 .mrbs-user-role {
   font-size: 10px;
-  color: #818CF8;
+  color: var(--modern-sidebar-label);
 }
 
 .mrbs-sidebar-actions {
   display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 .mrbs-sidebar-actions .mrbs-auth-form {
   flex: 1;
-  width: auto;
+  width: 100%;
 }
 
 /* Stacked, not side-by-side: "Register for a new account" is too long to
@@ -369,17 +373,17 @@ body {
   gap: 6px;
   padding: 6px 10px;
   font-size: 11px;
-  background: rgba(99,102,241,.2);
-  border: 1px solid rgba(99,102,241,.3);
+  background: rgba(47,90,128,.2);
+  border: 1px solid rgba(47,90,128,.3);
   border-radius: 6px;
-  color: #C7D2FE;
+  color: #D9E8F5 !important;
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
 }
 
 .mrbs-sidebar-account:hover {
-  background: rgba(99,102,241,.35);
+  background: rgba(47,90,128,.35);
   color: #fff;
 }
 
@@ -397,16 +401,16 @@ body {
   width: 100%;
   padding: 6px 10px !important;
   font-size: 11px !important;
-  background: rgba(99,102,241,.2) !important;
-  border: 1px solid rgba(99,102,241,.3) !important;
+  background: rgba(47,90,128,.2) !important;
+  border: 1px solid rgba(47,90,128,.3) !important;
   border-radius: 6px !important;
-  color: #C7D2FE !important;
+  color: #D9E8F5 !important;
   cursor: pointer;
   text-align: center;
 }
 
 .mrbs-auth-btn:hover {
-  background: rgba(99,102,241,.35) !important;
+  background: rgba(47,90,128,.35) !important;
   color: #fff !important;
 }
 
@@ -522,6 +526,25 @@ body {
   transition: background .12s, border-color .12s;
 }
 
+/* The chevron icons are loaded from an external webfont CDN (see print_head()
+   in header.inc), which can be blocked by ad blockers, ORB, or restrictive
+   networks, leaving these buttons empty. Draw a Unicode fallback chevron
+   ourselves (matching the technique mrbs.css.php already uses for the
+   legacy nav.arrow prev/next buttons) and hide the webfont glyph so we
+   never show both at once. */
+.mrbs-date-prev .ti,
+.mrbs-date-next .ti {
+  display: none;
+}
+
+.mrbs-date-prev::before {
+  content: '\2039';
+}
+
+.mrbs-date-next::before {
+  content: '\203a';
+}
+
 .mrbs-date-prev:hover,
 .mrbs-date-next:hover {
   background: #F3F4F6;
@@ -553,6 +576,7 @@ body {
   font-weight: 500;
   color: #111827;
   white-space: nowrap;
+  margin-left: 10px;
 }
 
 /* View switcher */
@@ -678,6 +702,7 @@ body {
   border-radius: 8px;
   font-size: 12px;
   font-weight: 500;
+  text-transform: uppercase;
   text-decoration: none !important;
   white-space: nowrap;
   transition: background .12s;
@@ -767,7 +792,7 @@ body {
 }
 
 .month_main td:hover {
-  background: #EEF2FF !important;
+  background: var(--modern-primary-light) !important;
 }
 
 .month_main td.today {
@@ -800,7 +825,7 @@ table.admin_table th {
   padding: 10px 12px;
   font-size: 12px;
   text-align: left;
-  border-right: 1px solid #4338CA;
+  border-right: 1px solid var(--modern-primary-dark);
 }
 
 table.admin_table td {
@@ -810,7 +835,7 @@ table.admin_table td {
 }
 
 table.admin_table tr:nth-child(odd)  td { background: #fff; }
-table.admin_table tr:nth-child(even) td { background: #F5F3FF; }
+table.admin_table tr:nth-child(even) td { background: #F3F7FB; }
 table.admin_table tr:hover           td { background: var(--modern-primary-light); }
 
 /* ── Forms ───────────────────────────────────────────────────── */
@@ -1512,6 +1537,37 @@ p.error {
   background: var(--modern-primary-dark);
 }
 
+/* The password-intro paragraph ("Enter your new password twice below.") is
+   wrapped in an empty-label row whose control <div> only holds a floated
+   <p> (mrbs.css.php: .standard fieldset > div > div > * { float: left }).
+   That collapses the control div to zero height, so the row overlaps the
+   next field. Un-float it so the row gets its natural height and spacing. */
+#register.standard fieldset > div > div > * {
+  float: none !important;
+}
+
+/* The show/hide password toggle (.eye) relies on a float + negative-margin
+   trick (mrbs.css.php) to sit over the input's right edge, which breaks
+   once #register.standard fieldset > div > * above forces every row child
+   to display:block/width:100% — the icon drops to its own full-width line
+   instead. Anchor it with absolute positioning against the row instead. */
+#register.standard fieldset > div {
+  position: relative;
+}
+
+#register.standard fieldset > div > div.eye {
+  display: block !important;
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: auto !important;
+  transform: translateY(-50%);
+}
+
+#register.standard fieldset > div > div.eye svg {
+  margin-left: 0;
+}
+
 /* ── Pending registrations (web/edit_users.php) ─────────────────── */
 #pending_registrations {
   background: #FFFBEB;
@@ -1586,15 +1642,15 @@ p.error {
   padding: 6px 8px;
   font-size: 11px;
   font-weight: 500;
-  background: rgba(99,102,241,.2);
-  border: 1px solid rgba(99,102,241,.3);
+  background: rgba(47,90,128,.2);
+  border: 1px solid rgba(47,90,128,.3);
   border-radius: 6px;
-  color: #C7D2FE;
+  color: #D9E8F5 !important;
   text-decoration: none;
 }
 
 .mrbs-sidebar-register:hover {
-  background: rgba(99,102,241,.35);
+  background: rgba(47,90,128,.35);
   color: #fff;
   text-decoration: none;
 }
@@ -1625,6 +1681,12 @@ p.error {
   background: #ECFDF5;
   color: #047857;
   border: 1px solid #A7F3D0;
+}
+
+.mrbs-settings-flash--error {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
 }
 
 #form_site_settings fieldset {
@@ -1724,6 +1786,39 @@ p.error {
   background: var(--modern-primary-dark);
 }
 
+#form_site_settings input[type="submit"][name="test_smtp_button"] {
+  background: #fff;
+  color: var(--modern-primary);
+  border: 1px solid var(--modern-primary);
+}
+
+#form_site_settings input[type="submit"][name="test_smtp_button"]:hover {
+  background: var(--modern-primary-light);
+}
+
+.mrbs-mail-activity {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+
+.mrbs-mail-activity th,
+.mrbs-mail-activity td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #E5E7EB;
+  word-break: break-word;
+}
+
+.mrbs-mail-activity th {
+  font-weight: 600;
+  color: #374151;
+}
+
+.mrbs-mail-activity-fail td {
+  color: #B91C1C;
+}
+
 @media (max-width: 600px) {
   #form_site_settings fieldset {
     padding: 18px 16px;
@@ -1732,3 +1827,248 @@ p.error {
 
 /* ── Sidebar toggle JS helper ────────────────────────────────── */
 /* Inline script added at end of page by theme — wires up hamburger */
+
+/* ════════════════════════════════════════════════════════════════
+   Dashboard-style components (currently used on web/pending.php)
+   ════════════════════════════════════════════════════════════════ */
+
+/* Stat cards */
+.mrbs-stat-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.mrbs-stat-card {
+  background: var(--modern-primary);
+  color: #fff;
+  border-radius: var(--modern-radius-lg);
+  padding: 16px 20px;
+  min-width: 160px;
+  box-shadow: var(--modern-shadow);
+}
+
+.mrbs-stat-card--highlight {
+  background: var(--modern-sidebar-bg);
+  border-top: 3px solid var(--modern-accent);
+}
+
+.mrbs-stat-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.mrbs-stat-card-label {
+  font-size: 12px;
+  margin-top: 4px;
+  opacity: .85;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* Panel (white card wrapping a table/section) */
+.mrbs-panel {
+  background: #fff;
+  border-radius: var(--modern-radius-lg);
+  box-shadow: var(--modern-shadow);
+  padding: 18px 20px;
+}
+
+.mrbs-panel-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-left: 4px solid var(--modern-accent);
+  padding: 2px 0 2px 12px;
+  margin-bottom: 14px;
+}
+
+.mrbs-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #111827;
+  margin: 0;
+}
+
+/* Search box + Advance Search toggle */
+.mrbs-panel-search {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.mrbs-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mrbs-search-box {
+  position: relative;
+}
+
+.mrbs-search-box input[type="search"],
+.mrbs-search-box input[type="text"] {
+  width: 220px;
+  padding: 7px 32px 7px 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--modern-radius);
+  font-size: 13px;
+}
+
+.mrbs-search-box input:focus {
+  outline: none;
+  border-color: var(--modern-primary);
+  box-shadow: 0 0 0 2px var(--modern-primary-light);
+}
+
+.mrbs-search-box .ti-search {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF;
+  pointer-events: none;
+}
+
+.mrbs-search-btn {
+  padding: 7px 16px !important;
+  border: 1px solid #D1D5DB !important;
+  border-radius: var(--modern-radius) !important;
+  background: #F3F4F6 !important;
+  color: #374151 !important;
+  font-size: 13px !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.mrbs-search-btn:hover {
+  background: #E5E7EB !important;
+}
+
+.mrbs-advance-search-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--modern-accent);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.mrbs-advance-search-toggle:hover {
+  color: var(--modern-accent-dark);
+}
+
+.mrbs-advance-search-toggle .ti {
+  transition: transform .15s;
+}
+
+.mrbs-advance-search-toggle[aria-expanded="true"] .ti {
+  transform: rotate(180deg);
+}
+
+.mrbs-advance-filters {
+  display: none;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 0 0 12px;
+  margin: -2px 0 12px;
+  border-left: 4px solid transparent;
+}
+
+.mrbs-advance-filters.open {
+  display: flex;
+}
+
+.mrbs-advance-filters select {
+  padding: 6px 10px;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--modern-radius);
+  font-size: 12px;
+  min-width: 140px;
+}
+
+/* DataTables control restyle to match the panel look */
+.dataTables_wrapper .dataTables_filter {
+  display: none;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_info {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.dataTables_wrapper .dataTables_length select {
+  padding: 3px 6px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border-radius: 6px !important;
+  border: 1px solid transparent !important;
+  padding: 4px 10px !important;
+  margin-left: 2px !important;
+  color: #374151 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--modern-primary-light) !important;
+  border-color: var(--modern-primary-light) !important;
+  color: var(--modern-primary-dark) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--modern-primary) !important;
+  border-color: var(--modern-primary) !important;
+  color: #fff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+  background: transparent !important;
+  color: #D1D5DB !important;
+}
+
+/* The calendar-specific topbar controls (view switcher, prev/today/next date
+   nav, period label) don't apply outside the calendar view. */
+body.pending .mrbs-topbar-center,
+body.pending .mrbs-date-nav,
+body.pending .mrbs-topbar-period {
+  display: none;
+}
+
+/* Legacy day/week/month/prev/next controls (web/js/resizable.js.php,
+   rendered per room column). These are styled by mrbs.css.php using the
+   $anchor_link_color / $button_color_stops / $banner_back_color variables
+   from styling.inc, which produces low-contrast (unselected) or fully
+   invisible white-on-transparent (selected) text. Override directly. */
+nav.view a,
+nav.arrow a {
+  background: var(--modern-primary-light) !important;
+  color: var(--modern-primary-dark) !important;
+}
+
+nav a.selected,
+nav.view a:hover,
+nav.view a:focus,
+nav.arrow a:hover,
+nav.arrow a:focus {
+  background: var(--modern-primary) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}

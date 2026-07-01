@@ -63,15 +63,15 @@ $search_table_border_color  = '#E5E7EB';
 $site_faq_entry_border_color = '#E5E7EB';
 
 // Links
-$anchor_link_color            = '#4F46E5';
-$anchor_visited_color         = '#6366F1';
-$anchor_hover_color           = '#3730A3';
+$anchor_link_color            = '#3B78B4';
+$anchor_visited_color         = '#2A5A8C';
+$anchor_hover_color           = '#2A5A8C';
 $anchor_link_color_banner     = $standard_font_color;
 $anchor_visited_color_banner  = $standard_font_color;
-$anchor_hover_color_banner    = '#4F46E5';
+$anchor_hover_color_banner    = '#3B78B4';
 $anchor_link_color_header     = $standard_font_color;
 $anchor_visited_color_header  = $standard_font_color;
-$anchor_hover_color_header    = '#4F46E5';
+$anchor_hover_color_header    = '#3B78B4';
 
 // Calendar row alternating colors
 $column_hidden_color            = '#F3F4F6';
@@ -93,8 +93,8 @@ $zebra_odd_color  = '#F5F3FF';
 $help_highlight_color = '#EEF2FF';
 
 // Buttons
-$button_color_stops = array('#EEF2FF', '#C7D2FE');
-$button_inset_color = '#4F46E5';
+$button_color_stops = array('#EAF2FB', '#BFDCF0');
+$button_inset_color = '#3B78B4';
 
 // Booking type fill colors — modern pastel palette
 $color_types = array(

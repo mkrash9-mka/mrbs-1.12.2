@@ -119,4 +119,69 @@ $(document).on('page_ready', function() {
   tableOptions.colReorder = {"fixedColumnsLeft": 1};
   pendingDataTable = makeDataTable('#pending_table', tableOptions);
 
+  <?php
+  // Wire up the custom search box, the "Search criteria" toggle, and the
+  // Area/Room filter selects added by pending.php to the panel above the table.
+  ?>
+  var searchInput    = document.getElementById('pending_search_input'),
+      searchBtn      = document.getElementById('pending_search_btn'),
+      advanceToggle  = document.getElementById('pending_advance_toggle'),
+      advanceFilters = document.getElementById('pending_advance_filters'),
+      areaSelect     = document.getElementById('pending_filter_area'),
+      roomSelect     = document.getElementById('pending_filter_room'),
+      areaCol,
+      roomCol;
+
+  if (searchInput)
+  {
+    $(searchInput).on('keyup search', function () {
+        pendingDataTable.search(this.value).draw();
+      });
+  }
+
+  if (searchBtn && searchInput)
+  {
+    searchBtn.addEventListener('click', function () {
+        pendingDataTable.search(searchInput.value).draw();
+      });
+  }
+
+  if (advanceToggle && advanceFilters)
+  {
+    advanceToggle.addEventListener('click', function () {
+        var open = advanceFilters.classList.toggle('open');
+        advanceToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+  }
+
+  if (areaSelect)
+  {
+    areaCol = pendingDataTable.column('.header_area');
+    areaCol.data().unique().sort().each(function (d) {
+        if (d !== '')
+        {
+          $(areaSelect).append($('<option>', {value: d, text: d}));
+        }
+      });
+    $(areaSelect).on('change', function () {
+        var val = this.value;
+        areaCol.search(val ? '^' + $.fn.dataTable.util.escapeRegex(val) + '$' : '', true, false).draw();
+      });
+  }
+
+  if (roomSelect)
+  {
+    roomCol = pendingDataTable.column('.header_room');
+    roomCol.data().unique().sort().each(function (d) {
+        if (d !== '')
+        {
+          $(roomSelect).append($('<option>', {value: d, text: d}));
+        }
+      });
+    $(roomSelect).on('change', function () {
+        var val = this.value;
+        roomCol.search(val ? '^' + $.fn.dataTable.util.escapeRegex(val) + '$' : '', true, false).draw();
+      });
+  }
+
 });
